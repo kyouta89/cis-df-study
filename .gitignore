@@ -1,0 +1,33 @@
+# ============================================================================
+#  公開してはいけないもの (ExamTopics ToS / ServiceNow ブレインダンプ禁止)
+#  ※ このリポジトリは「自作のパイプライン＋教科書」だけを公開する。
+#     問題文・正解・翻訳・査読結果など ExamTopics 由来のデータは一切含めない。
+# ============================================================================
+
+# 手動保存した入力HTML・構造解析サンプル (ExamTopics 原文)
+/raw/
+/samples/
+
+# data 直下の JSON = 問題文/翻訳/正解/査読結果 (将来増える分もまとめて除外)
+/data/*.json
+
+# 翻訳・検証のバッチ入出力 (問題文を含む)
+/data/parts/
+/data/verify/
+
+# DL した公式ドキュメント原文 (第三者コンテンツ・大量)。
+# 必要なら data/textbook/sources.json を元に src/fetch_docs.py で再取得できる。
+/data/textbook/raw/
+
+# 生成物: 問題集HTML (192問を埋め込み済み) と 試験の図表
+/site/index.html
+/site/images/
+
+# Claude Code のローカル個人設定 (ローカルパス・許可コマンドを含む・共有不要)
+.claude/settings.local.json
+
+# --- OS / エディタ / Python のゴミ ---
+.DS_Store
+Thumbs.db
+__pycache__/
+*.pyc

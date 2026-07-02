@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+<title>CIS-DF 教科書</title>
+<style>
+:root{--bg:#0f1115;--card:#1a1d24;--fg:#e8eaed;--mut:#9aa0a6;--line:#2a2e37;
+  --hi:#34a853;--mid:#fbbc04;--lo:#ea4335;--accent:#8ab4f8;}
+@media(prefers-color-scheme:light){:root{--bg:#f4f5f7;--card:#fff;--fg:#202124;--mut:#5f6368;--line:#e0e0e0;--accent:#1a73e8;}}
+*{box-sizing:border-box}
+html,body{overflow-x:hidden}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;
+  background:var(--bg);color:var(--fg);line-height:1.75;overflow-wrap:anywhere;-webkit-text-size-adjust:100%;}
+header{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 14px;display:flex;align-items:center;gap:10px}
+header h1{font-size:16px;margin:0;flex:1}
+header .sub{font-size:11px;color:var(--mut);font-weight:normal}
+header .qlink{font-size:12px;font-weight:700;color:var(--accent);text-decoration:none;border:1px solid var(--accent);padding:4px 10px;border-radius:8px;white-space:nowrap}
+#menubtn{display:none;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:14px;cursor:pointer}
+.wrap{display:flex;max-width:1100px;margin:0 auto}
+nav{width:300px;flex:none;border-right:1px solid var(--line);padding:14px 10px 60px;height:calc(100vh - 52px);position:sticky;top:52px;overflow:auto}
+nav ul{list-style:none;margin:0;padding:0}
+nav li.ch>a{display:block;font-weight:700;color:var(--fg);text-decoration:none;padding:7px 8px;border-radius:8px;margin-top:6px}
+nav li.ch>a:hover{background:var(--card)}
+nav .wt{font-size:10px;font-weight:700;color:#000;background:var(--accent);border-radius:999px;padding:1px 7px;margin-left:4px}
+nav li.ch>ul li{margin:1px 0}
+nav li.ch>ul a{display:block;color:var(--mut);text-decoration:none;font-size:13px;padding:5px 8px 5px 16px;border-radius:8px}
+nav li.ch>ul a:hover{background:var(--card);color:var(--fg)}
+nav li.todo a{opacity:.7}
+nav .soon{font-size:10px;color:var(--mid)}
+main{flex:1;min-width:0;padding:14px 18px 100px;max-width:760px}
+.chapter{margin-bottom:30px}
+.ch-title{font-size:20px;border-bottom:2px solid var(--accent);padding-bottom:8px;margin:26px 0 6px;scroll-margin-top:60px}
+.ch-title .wt{font-size:12px;color:#000;background:var(--accent);border-radius:999px;padding:2px 9px;margin-left:6px;vertical-align:middle}
+.sec{scroll-margin-top:60px;padding:6px 0 4px}
+.sec h2{font-size:17px;margin:22px 0 8px;color:var(--accent)}
+.sec h3{font-size:15px;margin:18px 0 6px}
+.sec p{margin:10px 0}
+.sec ul,.sec ol{padding-left:1.3em;margin:8px 0}
+.sec li{margin:4px 0}
+.sec code{background:var(--card);border:1px solid var(--line);border-radius:5px;padding:1px 5px;font-size:.9em;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.sec strong{color:var(--fg)}
+.sec a{color:var(--accent)}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13px;display:block;overflow-x:auto}
+th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+th{background:var(--card);font-weight:700}
+blockquote.callout{margin:12px 0;padding:10px 12px;border-radius:8px;border-left:4px solid var(--accent);
+  background:rgba(138,180,248,.08);font-size:14px}
+blockquote.callout>*:first-child{margin-top:0}blockquote.callout>*:last-child{margin-bottom:0}
+blockquote.callout.warn{border-left-color:var(--lo);background:rgba(234,67,53,.10)}
+blockquote.callout.note{border-left-color:var(--mid);background:rgba(251,188,4,.10)}
+.sources{margin:14px 0 6px;border-top:1px dashed var(--line);padding-top:8px}
+.sources .src-h{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.04em}
+.sources ul{list-style:none;padding:0;margin:6px 0 0}
+.sources li{margin:3px 0;font-size:12px}
+.sources a{color:var(--accent);word-break:break-all}
+.soon-body{color:var(--mut)}
+figure.diagram{margin:16px 0;text-align:center}
+figure.diagram svg{max-width:100%;height:auto;border:1px solid var(--line);border-radius:10px;background:rgba(127,127,127,.04);padding:8px}
+figure.diagram figcaption{font-size:12px;color:var(--mut);margin-top:6px}
+.diagram .box{fill:var(--card);stroke:var(--line);stroke-width:1.5}
+.diagram .root{fill:var(--accent);stroke:none}
+.diagram .hlbox{fill:var(--card);stroke:var(--lo);stroke-width:2}
+.diagram .t{fill:var(--fg);font-size:13px;font-weight:600}
+.diagram .tw{fill:#06121f;font-size:13px;font-weight:700}
+.diagram .sub{fill:var(--mut);font-size:11px}
+.diagram .hl{fill:var(--lo);font-size:11px;font-weight:700}
+.diagram .ln{stroke:var(--line);stroke-width:1.5;fill:none}
+.diagram .arrow{stroke:var(--accent);stroke-width:2;fill:none;marker-end:url(#ah)}
+.diagram .ahfill{fill:var(--accent)}
+.sec details{margin:12px 0;border:1px solid var(--line);border-radius:8px;background:rgba(127,127,127,.05)}
+.sec details>summary{cursor:pointer;padding:9px 12px;font-weight:600;color:var(--accent);font-size:13px;list-style:none}
+.sec details>summary::-webkit-details-marker{display:none}
+.sec details>summary::before{content:"▸ ";color:var(--mut)}
+.sec details[open]>summary::before{content:"▾ "}
+.sec details[open]>summary{border-bottom:1px solid var(--line)}
+.sec details>:not(summary){margin-left:12px;margin-right:12px}
+footer{border-top:1px solid var(--line);padding:14px 18px 30px;font-size:11px;color:var(--mut);max-width:1100px;margin:0 auto;line-height:1.6}
+footer b{color:var(--mut)}
+@media(max-width:760px){
+  #menubtn{display:block}
+  .wrap{display:block}
+  nav{position:fixed;left:0;top:52px;bottom:0;width:80%;max-width:320px;background:var(--bg);z-index:30;
+    transform:translateX(-105%);transition:transform .2s;border-right:1px solid var(--line);height:auto}
+  nav.open{transform:translateX(0)}
+  main{max-width:none}
+  #scrim{display:none;position:fixed;inset:52px 0 0 0;background:rgba(0,0,0,.5);z-index:25}
+  #scrim.open{display:block}
+}
+</style>
+</head>
+<body>
+<header>
+  <button id="menubtn" aria-label="目次">☰</button>
+  <h1>CIS-DF 教科書 <span class="sub">— CMDB &amp; CSDM データ基盤</span></h1>
+  <a class="qlink" href="index.html">📝 問題集</a>
+</header>
+<div class="wrap">
+  <nav id="nav"><ul><li class="ch"><a href="#ch0">基礎（前提知識・任意） </a><ul><li><a href="#ch0-s1">CMDB と CI とクラス階層（まず全体像）</a></li><li><a href="#ch0-s2">データの流れ：どこから来て、どう入るか（→ IRE → CMDB）</a></li><li><a href="#ch0-s3">サービスの基礎（service / offering / business service）</a></li></ul></li><li class="ch"><a href="#ch1">Governance / CMDB Health <span class="wt">35%</span></a><ul><li><a href="#ch1-s1">CMDB Health の3C: Completeness / Compliance / Correctness</a></li><li><a href="#ch1-s2">Health ダッシュボードと KPI / CSF メトリクス</a></li><li><a href="#ch1-s3">重複CIの検出と是正(De-duplication wizard・一括是正)</a></li><li><a href="#ch1-s4">Data Manager とポリシー / フィルター条件</a></li><li><a href="#ch1-s5">Remediation playbook によるデータ品質改善</a></li></ul></li><li class="ch"><a href="#ch2">Insight <span class="wt">20%</span></a><ul><li><a href="#ch2-s1">CMDB データからの可視化・価値抽出</a></li><li><a href="#ch2-s2">サービス視点とリレーションの活用</a></li><li><a href="#ch2-s3">レポート・CMDB Coverage・CIの再分類</a></li></ul></li><li class="ch"><a href="#ch3">Ingestion <span class="wt">19%</span></a><ul><li><a href="#ch3-s1">IRE(識別 / 突合エンジン)とゲートキーパー</a></li><li><a href="#ch3-s2">識別ルール・リコンシリエーションルール</a></li><li><a href="#ch3-s3">Multisource CMDB と複数データソースの統合</a></li></ul></li><li class="ch"><a href="#ch4">Configuration <span class="wt">15%</span></a><ul><li><a href="#ch4-s1">CI Class Manager(クラス階層・属性管理)</a></li><li><a href="#ch4-s2">Relationship ライフサイクルと依存関係</a></li><li><a href="#ch4-s3">Group Sync(Support / Change / Managed by グループ)</a></li></ul></li><li class="ch"><a href="#ch5">CSDM Fundamentals <span class="wt">11%</span></a><ul><li><a href="#ch5-s1">CSDM フレームワーク概要(5.0 / 4.0 の差)</a></li><li><a href="#ch5-s2">Lifecycle フィールド(Stage / Status)と CI 分類</a></li><li><a href="#ch5-s3">Lifecycle Mapping とサービス層(Domains)</a></li></ul></li></ul></nav>
+  <main><div id="ch0" class="chapter"><h1 class="ch-title">基礎（前提知識・任意） </h1><section id="ch0-s1" class="sec"><div class="sec-body"><blockquote class="callout">
+<p>🧭 <strong>この章は前提知識の地ならしです（任意）</strong>。CMDB/CSDM をすでに触っている人はスキップしてOK。
+CSA（プラットフォーム基礎）は分かるが CMDB は初めて、という読者向けに最短の全体像を置きます。</p>
+</blockquote>
+<h2>CMDB とは</h2>
+<p><strong>CMDB（Configuration Management Database）</strong> は、IT環境の構成要素と<strong>その関係</strong>を記録するデータベース。
+単なる資産一覧（静的なリスト）と違い、「何があるか」だけでなく「<strong>何が何に繋がっているか</strong>」を持つのが本質。</p>
+<ul>
+<li><strong>CI（Configuration Item）</strong> … 構成アイテム。実体は <strong>CI [<code>cmdb_ci</code>] テーブルのレコード</strong>。
+  サーバ・DB・アプリ・ネットワーク機器などが CI。</li>
+<li><strong>リレーション</strong> … CI 間の関係（例：アプリ→DB→サーバ）。第4章で詳説。</li>
+</ul>
+<blockquote class="callout note">
+<p>📌 CSAの知識で言い換えると：CMDB は <code>cmdb_ci</code> を基底とする<strong>テーブル群</strong>で、各CIはそのレコード。
+普段のテーブル/フォーム/参照の知識がそのまま効く。違うのは「<strong>関係</strong>」と「<strong>識別の厳密さ</strong>」（後述）。</p>
+</blockquote>
+<h2>クラス階層（テーブル継承）</h2>
+<p>CMDB は <code>cmdb_ci</code> を頂点に、<strong>クラス（＝テーブル）が継承で枝分かれ</strong>する構造。
+例：<code>cmdb_ci</code> → <code>cmdb_ci_hardware</code> → <code>cmdb_ci_computer</code> → <code>cmdb_ci_server</code> … と具体化していく。</p>
+<figure class="diagram">
+<svg viewBox="0 0 640 188" role="img" aria-label="CMDBクラス継承階層の図">
+  <rect class="box root" x="20" y="12" width="230" height="32" rx="6"/><text class="tw" x="35" y="33">cmdb_ci（基底）</text>
+  <path class="ln" d="M40 44 V73 H70"/>
+  <rect class="box" x="70" y="58" width="250" height="30" rx="6"/><text class="t" x="85" y="78">cmdb_ci_hardware</text>
+  <path class="ln" d="M90 88 V119 H120"/>
+  <rect class="box" x="120" y="104" width="250" height="30" rx="6"/><text class="t" x="135" y="124">cmdb_ci_computer</text>
+  <path class="ln" d="M140 134 V165 H170"/>
+  <rect class="box" x="170" y="150" width="250" height="30" rx="6"/><text class="t" x="185" y="170">cmdb_ci_server</text>
+  <text class="sub" x="450" y="112">子は親の属性・</text>
+  <text class="sub" x="450" y="130">ルールを継承 ↓</text>
+</svg>
+<figcaption>図: クラス継承。<code>cmdb_ci</code> を頂点に具体化し、子は親の属性・識別/突合/健全性ルールを継承する。</figcaption>
+</figure>
+
+<ul>
+<li>子クラスは親の<strong>属性を継承</strong>し、独自属性を足す。</li>
+<li>識別ルール・突合ルール・健全性設定なども<strong>親→子へ継承</strong>される（第1・3章で再登場）。</li>
+<li>これらクラスの定義・設定を一元管理するのが <strong>CI Class Manager</strong>（第4章）。</li>
+</ul>
+<blockquote class="callout">
+<p>🧩 <strong>independent / dependent</strong>（第3・4章への布石）：単独で存在できるCI（Server等）は <strong>independent</strong>、
+他のCIに依存しないと意味を成さないCI（Network Adapter, Application等）は <strong>dependent</strong>。
+この区別が「識別の仕方」を左右する。</p>
+</blockquote>
+<p><strong>この先の地図</strong>：構造（本節）→ <strong>データの入り方</strong>（次節）→ <strong>サービスの考え方</strong>（第3節）と進むと、
+第1章以降（健全性・取り込み・構成・CSDM）が読みやすくなる。</p></div><div class="sources"><span class="src-h">出典(ServiceNow 公式Docs)</span><ul><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/c_CIRelationships.html" target="_blank" rel="noopener">CI relationships in the CMDB</a></li><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/ci-class-manager-landing-page.html" target="_blank" rel="noopener">CI Class Manager</a></li></ul></div></section><section id="ch0-s2" class="sec"><div class="sec-body"><blockquote class="callout">
+<p>🧭 前提の地ならし（任意）。「CMDBにデータがどう入るのか」を俯瞰し、第3章(Ingestion)の前提を作る。</p>
+</blockquote>
+<h2>データの入り口（ソース）</h2>
+<p>CMDB のデータは、いくつかの<strong>データソース</strong>から入ってくる。CIS-DF では「<strong>入った後の処理</strong>」が主役だが、
+"どこから来るか"を知っておくと理解が早い。</p>
+<ul>
+<li><strong>Discovery</strong> … エージェントレスでインフラを探索し、サーバ・ネットワーク等を自動登録。</li>
+<li><strong>Service Mapping</strong> … アプリケーションサービスを上位からたどって構成（CIとリレーション）を地図化。</li>
+<li><strong>Import Set</strong> … 外部データ（CSV/他システム）を取り込む仕組み。</li>
+<li><strong>Service Graph Connector（SGC）/ IntegrationHub ETL</strong> … サードパーティ製品との標準統合。</li>
+<li><strong>手動入力</strong> … フォームからの手作業。</li>
+</ul>
+<h2>すべては IRE を通る（ゲートキーパー）</h2>
+<p>どのソースから来ても、データは <strong>IRE（Identification and Reconciliation Engine）</strong> を通って CMDB に入る。
+IRE は2つの仕事をする：</p>
+<ol>
+<li><strong>識別（Identification）</strong>：既存CIと同じか判定し、<strong>重複CIの作成を防ぐ</strong>。</li>
+<li><strong>突合（Reconciliation）</strong>：<strong>権威あるソースの値だけ</strong>を書き込み、ソース同士の上書きを防ぐ。</li>
+</ol>
+<figure class="diagram">
+<svg viewBox="0 0 640 210" role="img" aria-label="データソースからIREを通ってCMDBへ入る流れの図">
+  <defs><marker id="ah" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" class="ahfill"/></marker></defs>
+  <rect class="box" x="10" y="20" width="150" height="26" rx="6"/><text class="t" x="85" y="38" text-anchor="middle">Discovery</text>
+  <rect class="box" x="10" y="56" width="150" height="26" rx="6"/><text class="t" x="85" y="74" text-anchor="middle">Service Mapping</text>
+  <rect class="box" x="10" y="92" width="150" height="26" rx="6"/><text class="t" x="85" y="110" text-anchor="middle">Import Set</text>
+  <rect class="box" x="10" y="128" width="150" height="26" rx="6"/><text class="t" x="85" y="146" text-anchor="middle">SGC / ETL</text>
+  <rect class="box" x="10" y="164" width="150" height="26" rx="6"/><text class="t" x="85" y="182" text-anchor="middle">手動入力</text>
+  <path class="arrow" d="M166 105 H250"/>
+  <rect class="box root" x="250" y="76" width="150" height="58" rx="8"/>
+  <text class="tw" x="325" y="100" text-anchor="middle">IRE</text>
+  <text class="tw" x="325" y="120" text-anchor="middle">識別＋突合</text>
+  <path class="arrow" d="M400 105 H486"/>
+  <rect class="box" x="486" y="76" width="140" height="58" rx="8"/>
+  <text class="t" x="556" y="100" text-anchor="middle">CMDB</text>
+  <text class="sub" x="556" y="120" text-anchor="middle">cmdb_ci ほか</text>
+  <text class="sub" x="325" y="156" text-anchor="middle">重複防止 / 権威ソース選択</text>
+</svg>
+<figcaption>図: データソース → <b>IRE（ゲートキーパー）</b> → CMDB。入口が何であっても IRE を通る。</figcaption>
+</figure>
+
+<blockquote class="callout note">
+<p>📌 <strong>要点</strong>：「CMDBが汚れる」主因は、重複と、信頼できないソースの上書き。だから入口に IRE を置く。
+第3章ではこの IRE（識別ルール・突合ルール・CMDB 360）を詳しく扱う。</p>
+<p>🧩 第1章（健全性）とのつながり：IRE で防ぎきれない劣化（古いCI・欠落・監査違反）を、
+後追いで測って直すのが CMDB Health。<strong>入口=IRE、健診=CMDB Health</strong> と対にして覚えると整理できる。</p>
+</blockquote></div><div class="sources"><span class="src-h">出典(ServiceNow 公式Docs)</span><ul><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/ire.html" target="_blank" rel="noopener">Identification and Reconciliation Engine (IRE)</a></li></ul></div></section><section id="ch0-s3" class="sec"><div class="sec-body"><blockquote class="callout">
+<p>🧭 前提の地ならし（任意）。第4章(Group Sync)・第5章(CSDM)の前提になる「サービス」の語彙を整理する。</p>
+</blockquote>
+<h2>「サービス」とは</h2>
+<p>ServiceNow（と ITIL）でいう <strong>service</strong> は、「<strong>コストやリスクを自分で抱えずに、望む成果を得られるようにするもの</strong>」。
+サービスは典型的に3要素を持つ：<strong>interaction（やり取り）/ offering（提供形態）/ service system（提供を支える仕組み）</strong>。</p>
+<p>CMDB/CSDM では、似た言葉が複数出てくるので、最初に区別しておくと混乱しない。</p>
+<table>
+<thead>
+<tr>
+<th>用語</th>
+<th>ざっくり</th>
+<th>視点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Business service</strong></td>
+<td>ビジネスから見たサービス（例：メール、給与計算）</td>
+<td>消費者・ビジネス</td>
+</tr>
+<tr>
+<td><strong>Technology management service</strong>（旧 Technical service）</td>
+<td>それを支える技術的なサービス（運用CI・1階層）</td>
+<td>提供者・技術</td>
+</tr>
+<tr>
+<td><strong>Service offering</strong></td>
+<td>サービスの<strong>具体的な提供形態/コミットメント</strong>（例：Gold/Silver、地域別）</td>
+<td>契約・SLA</td>
+</tr>
+<tr>
+<td><strong>Service instance</strong>（旧 application service）</td>
+<td>実際に動いている1つのサービスの実体（構成CIの集合）</td>
+<td>運用実体</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="callout note">
+<p>📌 <strong>要点</strong>：<strong>service（種類）</strong> と <strong>offering（その具体的な提供形態）</strong> は別物。
+offering は SLA や対象範囲を伴う「売り物/約束」の単位。第4章の Group Sync は、この
+<strong>offering を起点にグループ割当をCIへ同期</strong>する話。</p>
+<p>🧩 第5章（CSDM）への布石：CSDM は、これらサービスやCIを<strong>正しいテーブル/ドメインに置く</strong>ための標準。
+「business service は誰が消費し、technology management service が何を提供し…」という関係を
+整理するのが CSDM の目的、と捉えておくと第5章が読みやすい。</p>
+</blockquote>
+<p>これで前提は十分。次は <strong>第1章 Governance / CMDB Health（配点35%）</strong> から本編に入る。</p></div><div class="sources"><span class="src-h">出典(ServiceNow 公式Docs)</span><ul><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/common-service-data-model-csdm/csdm-conceptual-model.html" target="_blank" rel="noopener">CSDM data domains</a></li></ul></div></section></div><div id="ch1" class="chapter"><h1 class="ch-title">Governance / CMDB Health <span class="wt">35%</span></h1><section id="ch1-s1" class="sec"><div class="sec-body"><h2>CMDB Health の3C</h2>
+<p>CMDB Health は、CMDB データの健全性を <strong>KPI（Key Performance Indicator）</strong> ごとにスコア化して
+ダッシュボードに集約する機能。試験では「3C」として <strong>Completeness / Correctness / Compliance</strong>
+が問われるが、公式にはこれに <strong>Relationships（リレーション健全性）</strong> を加えた4本柱で構成される。
+各 KPI はさらに複数の<strong>サブメトリクス</strong>に分かれる。</p>
+<figure class="diagram">
+<svg viewBox="0 0 640 200" role="img" aria-label="CMDB Health の KPI 構成図">
+  <rect class="box root" x="240" y="14" width="160" height="36" rx="8"/>
+  <text class="tw" x="320" y="37" text-anchor="middle">CMDB Health</text>
+  <path class="ln" d="M320 50 V72 M85 72 H555 M85 72 V96 M235 72 V96 M385 72 V96 M535 72 V96"/>
+  <rect class="box" x="15" y="96" width="140" height="38" rx="8"/>
+  <text class="t" x="85" y="120" text-anchor="middle">Completeness</text>
+  <text class="sub" x="85" y="154" text-anchor="middle">Required / Recommended</text>
+  <text class="sub" x="85" y="170" text-anchor="middle">（必須・推奨の欠落）</text>
+  <rect class="box hlbox" x="165" y="96" width="140" height="38" rx="8"/>
+  <text class="t" x="235" y="120" text-anchor="middle">Correctness</text>
+  <text class="sub" x="235" y="154" text-anchor="middle">Orphan / Stale /</text>
+  <text class="hl" x="235" y="170" text-anchor="middle">Duplicate ← 重複はここ</text>
+  <rect class="box" x="315" y="96" width="140" height="38" rx="8"/>
+  <text class="t" x="385" y="120" text-anchor="middle">Compliance</text>
+  <text class="sub" x="385" y="154" text-anchor="middle">Audit（監査）</text>
+  <text class="sub" x="385" y="170" text-anchor="middle">要・監査の有効化</text>
+  <rect class="box" x="465" y="96" width="140" height="38" rx="8"/>
+  <text class="t" x="535" y="120" text-anchor="middle">Relationships</text>
+  <text class="sub" x="535" y="154" text-anchor="middle">dup / orphan / stale</text>
+  <text class="sub" x="535" y="170" text-anchor="middle">（設定変更不可）</text>
+</svg>
+<figcaption>図1: CMDB Health の KPI とサブメトリクス。<b>重複(Duplicate)は Correctness</b> に属する。</figcaption>
+</figure>
+
+<ul>
+<li><strong>Completeness（完全性）</strong> — 必須・推奨フィールドが未入力でないか。</li>
+<li><em>Required</em>：辞書(dictionary)で <strong>mandatory</strong> 指定された属性の欠落。</li>
+<li><em>Recommended</em>：<strong>recommended</strong> 指定属性の欠落（<strong>out-of-box では推奨フィールドは未設定</strong>）。</li>
+<li><strong>Correctness（正確性）</strong> — データ整合性ルールに対する値の誤り。</li>
+<li><em>Orphan</em>（孤立）／<em>Staleness</em>（陳腐化）／<em>Duplicate</em>（重複）。</li>
+<li><strong>Compliance（準拠性）</strong> — <strong>監査（audit）</strong> の実行結果に基づく。証明書(certificate)への適合。</li>
+<li><strong>Relationships（リレーション）</strong> — 重複/孤立/陳腐 なリレーション（<strong>設定変更不可</strong>のメトリクス）。</li>
+</ul>
+<blockquote class="callout warn">
+<p>⚠️ <strong>引っかけ最重要</strong>：<strong>「重複CI(duplicate)」は Correctness</strong> のサブメトリクス。
+Completeness（欠落）と混同させる選択肢が頻出。欠落＝Completeness、重複/古い/孤立＝Correctness、
+監査違反＝Compliance、と整理して覚える。</p>
+</blockquote>
+<h3>集約のされ方</h3>
+<p>CI を各メトリクスでテスト → 結果を <strong>クラス / ヘルスグループ / サービス / リレーション</strong> の各レベルで
+集約 → <strong>CMDB Health ダッシュボード</strong>に表示。多くのメトリクスは<strong>テスト内容自体を設定可能</strong>
+（準拠/非準拠の判定基準を組織標準に合わせて調整できる）。</p>
+<blockquote class="callout note">
+<p>📌 <strong>要点</strong>：CMDB Health は <strong>CMDB テーブルのみ対象</strong>（non-CMDB テーブルは非対応）。
+ドメイン分離が有効なら、ログオン中ユーザーのドメインのデータ・ルール・設定に基づき表示され、
+子ドメインに定義が無ければ親の設定が再帰的に適用される（ドメインアウェア）。</p>
+</blockquote>
+<p><strong>主要用語</strong>：KPI / メトリクス / inclusion rule（健全性テスト対象の包含） /
+集約レベル（class・health group・service・relationship）。</p>
+<p>次節では、これらのスコアを見る<strong>ダッシュボードと KPI/メトリクスの設定</strong>を扱う。</p></div><div class="sources"><span class="src-h">出典(ServiceNow 公式Docs)</span><ul><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/overview-cmdb-health.html" target="_blank" rel="noopener">Overview of CMDB Health</a></li><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/r_CMDBHealthMetrics.html" target="_blank" rel="noopener">CMDB Health KPIs and metrics</a></li></ul></div></section><section id="ch1-s2" class="sec"><div class="sec-body"><h2>ダッシュボードと設定</h2>
+<h3>CMDB Health Dashboard のビュー</h3>
+<p>メインの <strong>CMDB Health Dashboard</strong> には3つのビューがある：</p>
+<ul>
+<li><strong>Class View</strong> — クラス/CI の健全性をメトリクス・KPI・クラス階層で集約表示。失敗CIの是正タスクへアクセス可。</li>
+<li><strong>Service View</strong> — サービス単位の健全性。サービスに属するCIごとの詳細。</li>
+<li><strong>Health Group View</strong> — タイプ <strong>Health</strong> の CMDB グループ単位の健全性。</li>
+</ul>
+<p>別途 <strong>Relationship Health Dashboard</strong>（重複/孤立/陳腐なリレーション）や、CIフォーム上の
+<strong>CI Health</strong> タイルもある。ダッシュボードは <strong>CMDB Workspace</strong> または <strong>Service Graph Workspace</strong> から開く。</p>
+<blockquote class="callout note">
+<p>📌 <strong>要点（セットアップ）</strong>：健全性データの収集・集約には、初期状態で<strong>無効</strong>の
+<strong>CMDB Health Dashboard ジョブ</strong>を<strong>有効化</strong>する必要がある。あわせて system property と
+KPI/メトリクスのテストルールを組織標準に合わせて構成する。</p>
+</blockquote>
+<h3>KPI / メトリクスの設定どころ</h3>
+<table>
+<thead>
+<tr>
+<th>場所</th>
+<th>何を設定するか</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CI Class Manager</strong>（Configuration &gt; CI Class Manager）</td>
+<td>orphan ルール・audit 証明書・recommended fields ルールなど、<strong>健全性テストに使う規則と定義</strong>を管理</td>
+</tr>
+<tr>
+<td><strong>CMDB Health Preferences</strong>（Configuration &gt; Health Preferences）</td>
+<td>system property、ジョブ有効化、KPI/メトリクスの有効・無効、<strong>最大失敗しきい値(threshold)</strong>、失敗CIへのタスク生成</td>
+</tr>
+</tbody>
+</table>
+<p>ベースシステムでは<strong>全KPI・全メトリクスが対象に含まれる</strong>。どの KPI/メトリクスを評価・ダッシュボードに
+含めるかは設定で変更でき、メトリクスには<strong>重み付け</strong>を構成できる。</p>
+<h3>試験で効く具体値</h3>
+<ul>
+<li><strong>Staleness（陳腐化）の既定ルール</strong>：<code>cmdb_ci</code> クラスに <strong>Effective Duration = 60日</strong> の既定 staleness ルール。
+  全拡張クラスに適用され、クラス固有ルールで上書き可。クラス固有が無ければ既定が使われる。</li>
+<li><strong>Duplicate メトリクス</strong>：<strong>識別ルール(identification rules)</strong> で検出し、<strong>independent な CI のみ</strong>が重複評価対象。
+  1セット内の「重複数」＝セット内CI総数 − 1。</li>
+<li><strong>Compliance</strong>：<strong>監査(Audit)を有効化</strong>しないと結果が出ない。<strong>scripted audit は Last run date が未設定</strong>のため、
+  コンプライアンスKPIに含めるにはスクリプト側で実行時刻を記録する必要がある。</li>
+</ul>
+<p><strong>主要プロパティ</strong>：<code>glide.cmdb.health.src.cmdb_health_audit_only</code>（true で CMDB Health 由来の結果のみ集約）。</p></div><div class="sources"><span class="src-h">出典(ServiceNow 公式Docs)</span><ul><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/c_MonitorCMDBHealth.html" target="_blank" rel="noopener">View CMDB Health Dashboard</a></li><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/r_CMDBHealthMetrics.html" target="_blank" rel="noopener">CMDB Health KPIs and metrics</a></li><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/t_EnableCMDBHealthDashboardJob.html" target="_blank" rel="noopener">Enable and configure a CMDB Health Dashboard job</a></li></ul></div></section><section id="ch1-s3" class="sec"><div class="sec-body"><h2>重複CIの是正</h2>
+<p>重複CIは CMDB の整合性・信頼性を損なうため、検出と是正を定期的に行う。</p>
+<h3>検出 → タスク化</h3>
+<p><strong>IRE（Identification and Reconciliation Engine）</strong> が重複を検出すると、重複CIの各セットを
+<strong>de-duplication タスク</strong>にまとめる。タスクには重複と判定した根拠データと、セット内の全重複CIが含まれる。</p>
+<blockquote class="callout note">
+<p>📌 一部のケースでは IRE が自動でタスクを生成しない。その場合は <strong>手動で de-duplication タスクを作成</strong>して是正する。</p>
+</blockquote>
+<h3>Main CI と <code>duplicate_of</code>（最頻出概念）</h3>
+<p>是正は、重複CIのセットを<strong>1つのCIに統合</strong>して重複を解消する操作。</p>
+<figure class="diagram">
+<svg viewBox="0 0 640 190" role="img" aria-label="重複是正でMain CIへ統合する流れの図">
+  <defs><marker id="ah" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" class="ahfill"/></marker></defs>
+  <text class="sub" x="95" y="22" text-anchor="middle">重複セット（互いに重複）</text>
+  <rect class="box" x="20" y="30" width="150" height="140" rx="8"/>
+  <rect class="box" x="40" y="44" width="110" height="30" rx="6"/><text class="t" x="95" y="64" text-anchor="middle">CI-A</text>
+  <rect class="box hlbox" x="40" y="84" width="110" height="30" rx="6"/><text class="t" x="95" y="104" text-anchor="middle">CI-B</text>
+  <rect class="box" x="40" y="124" width="110" height="30" rx="6"/><text class="t" x="95" y="144" text-anchor="middle">CI-C</text>
+  <path class="arrow" d="M176 100 H248"/>
+  <text class="sub" x="212" y="90" text-anchor="middle">Main選択</text>
+  <text class="sub" x="212" y="118" text-anchor="middle">＋統合</text>
+  <rect class="box hlbox" x="300" y="38" width="322" height="34" rx="6"/><text class="t" x="461" y="59" text-anchor="middle">Main = CI-B（duplicate_of = 空）</text>
+  <rect class="box" x="300" y="84" width="322" height="30" rx="6"/><text class="t" x="461" y="104" text-anchor="middle">CI-A → duplicate_of = B</text>
+  <rect class="box" x="300" y="124" width="322" height="30" rx="6"/><text class="t" x="461" y="144" text-anchor="middle">CI-C → duplicate_of = B</text>
+</svg>
+<figcaption>図: 重複セットから <b>Main CI</b> を選び統合。残りは <code>duplicate_of</code> が Main を指す。</figcaption>
+</figure>
+
+<ul>
+<li><strong>Main CI</strong> … セットの中で<strong>残す（active のままにする）CI</strong>。是正の最初の手順で選ぶ。
+  残りのCIから、どの属性値・リレーション・関連項目を Main CI に取り込むかを選択して統合する。</li>
+<li><strong><code>duplicate_of</code> 属性</strong> … 重複CIが Main CI を参照するためのフィールド。</li>
+<li>是正後：Main CI の <code>duplicate_of</code> は<strong>空</strong>。他の重複CIの <code>duplicate_of</code> は <strong>Main CI を参照</strong>。</li>
+<li>New York 以降にアップグレードしたインスタンスで Main CI 不明の重複は、<code>duplicate_of</code> が <strong>'Unknown'</strong>。</li>
+<li>IRE が内部利用するため<strong>手動更新は制限</strong>（自分自身を Main にできない／別ドメインの Main 不可／重複の連鎖不可）。</li>
+</ul>
+<h3>是正の2経路</h3>
+<ul>
+<li><strong>一括（bulk）</strong> … <strong>De-duplication Dashboard</strong> と <strong>De-duplication Template Library</strong>。
+  クラスごとの是正設定を<strong>テンプレート</strong>化し、複数タスクへ一貫適用。</li>
+<li><strong>単一</strong> … <strong>Duplicate CI Remediator</strong>（ウィザード）で1タスクずつ。属性・リレーション・関連項目の統合オプションを設定。
+  Now Assist for CMDB 3.0+ があれば AI 支援の解決スキルも利用可。</li>
+</ul>
+<h3>試験で効く具体値・挙動</h3>
+<ul>
+<li><strong>大量重複のしきい値</strong>：<code>glide.duplicate_ci_remediator.max.cis</code> 既定 <strong>1,000</strong>（上げても<strong>上限5,000</strong>）。
+  超過時はウィザードのオプションが制限（Recommended な Main CI のみ等）。</li>
+<li><strong>関連テーブルへの影響</strong>：<code>glide.duplicate_ci_remediator.merge_related_items_enhanced = true</code> と
+  設定テーブル登録で、是正中に関連テーブルのワークフロー/ビジネスルールを無効化して完走させられる
+  （既定で <strong>Change [change_request]</strong> と <strong>Task CI [task_ci]</strong> はワークフロー無効化＋エラー無視で構成済み）。</li>
+<li>変更要求の状態が <strong>New 以外</strong>ならCI削除時に当該CIは change から除去、<strong>New</strong> なら Main CI に更新される
+  （ビジネスルール <em>Read only CI when not New</em> が保護）。</li>
+</ul>
+<p><strong>主要テーブル/用語</strong>：de-duplication task / Main CI / <code>duplicate_of</code> / Duplicate CI Remediator / テンプレート。</p></div><div class="sources"><span class="src-h">出典(ServiceNow 公式Docs)</span><ul><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/de-duplication-tasks.html" target="_blank" rel="noopener">Duplicate CIs remediation</a></li><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/properties-duplicate-ci.html" target="_blank" rel="noopener">Properties related to remediation of duplicate CIs</a></li></ul></div></section><section id="ch1-s4" class="sec"><div class="sec-body"><h2>CMDB Data Manager</h2>
+<p><strong>CMDB Data Manager</strong> は、CIの<strong>ライフサイクル（保持・退役・削除/アーカイブ・認証/証明）</strong>を
+<strong>ポリシー</strong>で管理するガバナンスツール。CMDB Workspace の <strong>Management</strong>、または
+Service Graph Workspace の <strong>Governance</strong> ビューから開く。</p>
+<ul>
+<li><strong>ロール</strong>：<strong><code>data_manager_admin</code></strong>（Data Manager Administrator）でプロパティ・ポリシーを管理。</li>
+<li><strong>ライフサイクルポリシー</strong>：フィルタ条件に合うCIへ、退役/削除/アーカイブ等のアクションを適用。</li>
+<li><strong>Retirement definitions（退役定義）</strong>：ポリシーで使う退役の定義（どう退役させるか）。</li>
+<li><strong>スケジュール実行</strong>：ポリシーのジョブは指定ユーザーで実行（既定 <strong>DataManager Job Runner</strong>、
+  グループ <em>Data Manager Scheduled Job Users</em>）。</li>
+<li><strong>バッチサイズ</strong>：<code>glide.cmdb.data.manager.delete.batch.size</code> 既定 <strong>1000</strong>（削除/アーカイブの性能最適化）。</li>
+</ul>
+<blockquote class="callout note">
+<p>📌 <strong>要点</strong>：Data Manager は「重複の是正」ではなく、<strong>CIのライフサイクル統制</strong>（古い/不要なCIを
+ポリシーで退役・削除し、健全性を維持する）担当。de-duplication（前節）とは役割が別。</p>
+</blockquote>
+<h3>ポリシーの型</h3>
+<ul>
+<li><strong>Retirement / retention（退役・保持）</strong>：条件に合うCIを退役・削除・アーカイブ。</li>
+<li><strong>Certification / Attestation（認証・証明）</strong>：CIデータの正しさを担当者にレビュー・証明させる
+  （review task / attestation task が生成される）。下書きポリシーは<strong>publish</strong>して有効化する。</li>
+</ul>
+<h2>データ認証と Compliance KPI</h2>
+<p><strong>Data Certification</strong> は、CMDBの値が期待どおりかを<strong>監査(audit)</strong>で検証する仕組み。
+これが CMDB Health の <strong>Compliance KPI</strong> に直結する。</p>
+<ul>
+<li><strong>テンプレート監査</strong>と<strong>スクリプト監査(scripted audit)</strong> がある。</li>
+<li>CIが Compliance テストに合格するには、そのCIに対する<strong>全ての監査に準拠</strong>している必要がある。</li>
+<li><strong>監査の有効化が必須</strong>（無効だと Compliance KPI に結果が出ない）。</li>
+<li>スクリプト監査は <strong>Last run date が未設定</strong>のため、KPIに含めるにはスクリプトで実行時刻を記録する。</li>
+</ul>
+<blockquote class="callout warn">
+<p>⚠️ <strong>引っかけ</strong>：Compliance＝<strong>監査(audit/certification)結果</strong>。Completeness（必須フィールド欠落）や
+Correctness（重複・stale）とは別軸。「監査」「証明書」「attestation」が出たら Compliance を想起。</p>
+</blockquote>
+<p><strong>主要用語</strong>：Data Manager / lifecycle policy / retirement definition / <code>data_manager_admin</code> /
+certification・attestation / template audit・scripted audit。</p></div><div class="sources"><span class="src-h">出典(ServiceNow 公式Docs)</span><ul><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/components-cmdb-data-manager.html" target="_blank" rel="noopener">Components related to CMDB Data Manager</a></li><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/c_DataCertification.html" target="_blank" rel="noopener">Data Certification</a></li><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/r_CMDBHealthMetrics.html" target="_blank" rel="noopener">CMDB Health KPIs and metrics（Compliance / Audit）</a></li></ul></div></section><section id="ch1-s5" class="sec"><div class="sec-body"><h2>CI Remediation（是正の仕組み）</h2>
+<p>CMDB Health は、健全性テストに<strong>失敗したCI</strong>へ修正アクションを、管理された標準的なやり方で
+適用する<strong>是正(remediation)フレームワーク</strong>を提供する。失敗したCIには<strong>タスク</strong>が作られ、
+そこに <strong>CMDB Remediation Rule</strong> を紐づけてワークフローを実行する（例：stale/orphan なCIを削除）。</p>
+<h3>事前準備：是正ワークフロー</h3>
+<ul>
+<li>先に<strong>是正ワークフローを作成して publish</strong>（<strong>Workflow [wf_workflow]</strong> テーブル）。Classic でも Orchestration でも可。</li>
+<li>ワークフローの<strong>テーブルは是正ルールの Task type と一致</strong>させる。</li>
+<li>ワークフロー側の <strong>If condition matches を <code>None</code></strong> にして条件を持たせない
+  → <strong>是正ルール側のフィルタ</strong>が効くようにする。</li>
+<li><strong>必要ロール</strong>：<code>sn_cmdb_admin</code> または <code>itil_admin</code>（<code>sn_cmdb_editor</code> / <code>itil</code> の上に付与）。</li>
+</ul>
+<h3>CMDB Remediation Rule の主なフィールド</h3>
+<table>
+<thead>
+<tr>
+<th>フィールド</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Task type</strong></td>
+<td>是正対象の CMDB ヘルス関連タスクの種類</td>
+</tr>
+<tr>
+<td><strong>Task filter</strong></td>
+<td>対象タスクの絞り込み（CIフィールドへの <strong>dot-walking</strong> 可）</td>
+</tr>
+<tr>
+<td><strong>Execution</strong></td>
+<td><strong>Manual</strong>＝手動適用 ／ <strong>Automatic</strong>＝条件一致タスクの<strong>作成時に一度</strong>自動適用</td>
+</tr>
+<tr>
+<td><strong>Active</strong></td>
+<td>ワークフロー実行の許可</td>
+</tr>
+<tr>
+<td><strong>Workflow</strong></td>
+<td>実行する是正ワークフロー</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="callout note">
+<p>📌 <strong>要点</strong>：
+- <strong>Automatic</strong> … ビジネスルール <strong><em>Run remediations for CMDBHealth task</em></strong> が、Task filter に一致するCIへ
+  ワークフローを適用（タスク作成時に1回）。
+- <strong>Manual</strong> … ルールに定義したワークフローを<strong>手動で</strong>適用（<strong>Apply CMDB remediation</strong>）。</p>
+</blockquote>
+<h3>章のまとめ（Governance / CMDB Health）</h3>
+<ol>
+<li>健全性は <strong>Completeness / Correctness / Compliance（＋Relationships）</strong> で測る（<a href="#ch1-s1">§1</a>）。</li>
+<li><strong>ダッシュボード</strong>で可視化、<strong>ジョブ有効化</strong>と<strong>KPI/メトリクス設定</strong>で運用に合わせる（<a href="#ch1-s2">§2</a>）。</li>
+<li><strong>重複</strong>は IRE がタスク化 → <strong>Main CI / <code>duplicate_of</code></strong> で統合（単一ウィザード or 一括テンプレート）（<a href="#ch1-s3">§3</a>）。</li>
+<li><strong>Data Manager</strong> でライフサイクル統制、<strong>監査/認証</strong>が <strong>Compliance</strong> を支える（<a href="#ch1-s4">§4</a>）。</li>
+<li>失敗CIは <strong>Remediation Rule＋ワークフロー</strong>で標準的に是正（本節）。</li>
+</ol>
+<p><strong>ナビ重要</strong>：是正の起点は常に「<strong>健全性テスト失敗 → タスク → ルール → ワークフロー</strong>」という流れ。</p></div><div class="sources"><span class="src-h">出典(ServiceNow 公式Docs)</span><ul><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/t_CreateCMDBRemediationRule.html" target="_blank" rel="noopener">Create a CMDB remediation rule</a></li><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/t_ApplyCMDBRemediation.html" target="_blank" rel="noopener">Apply CMDB remediation</a></li></ul></div></section></div><div id="ch2" class="chapter"><h1 class="ch-title">Insight <span class="wt">20%</span></h1><section id="ch2-s1" class="sec"><div class="sec-body"><h2>Insight ＝ ガバナンスされたデータから価値を引き出す</h2>
+<p>第1章で「健全化」し第3章で「正しく取り込んだ」CMDBデータを、<strong>可視化して意思決定に使う</strong>のが Insight 領域。
+中心は2つのワークスペースと、その <strong>Insights（インサイト）ダッシュボード</strong>群。</p>
+<h3>CMDB Workspace / Service Graph Workspace</h3>
+<ul>
+<li><strong>CMDB Workspace</strong>：CMDBの検索・探索、健全性や最近のアクティビティの確認、各ダッシュボード/ツール
+  （<strong>CMDB Health・Data Manager・CMDB 360</strong>）への入口。ビューは Home / Insights / Management / Governance など。</li>
+<li><strong>Service Graph Workspace</strong>：データオーナー視点。<strong>Insights / Ingestion / Governance</strong> などのビューを持つ。</li>
+</ul>
+<h3>Insights ダッシュボード（Service Graph Workspace）</h3>
+<p>ナビゲーションの <strong>Insights アイコン</strong>から、集計・状態・健全性を示すダッシュボードを見る。
+<strong>必要ロール：<code>sn_cmdb_user</code> 系</strong>（<code>sn_cmdb_user</code> / <code>sn_cmdb_editor</code> / <code>sn_cmdb_admin</code>）。アクセス権のあるものだけ表示。</p>
+<table>
+<thead>
+<tr>
+<th>ダッシュボード</th>
+<th>見えるもの</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CMDB Health</strong></td>
+<td>健全性スコア（3C＋Relationships）</td>
+</tr>
+<tr>
+<td><strong>CMDB Data Foundation</strong> / <strong>CSDM Data Foundation</strong></td>
+<td>データ基盤の成熟度（getwell）</td>
+</tr>
+<tr>
+<td><strong>Service instances</strong></td>
+<td>サービスインスタンスの状態</td>
+</tr>
+<tr>
+<td><strong>CMDB 360</strong></td>
+<td>属性のソース別履歴（第3章）</td>
+</tr>
+<tr>
+<td><strong>CMDB success advisor</strong> / <strong>Feature adoption</strong> / <strong>Performance insights</strong></td>
+<td>改善提案・機能採用・性能</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="callout note">
+<p>📌 <strong>要点</strong>：「健全性・データ基盤・サービス・360・採用度」を<strong>ダッシュボードで俯瞰</strong>するのが Insight。
+アクセスは Workspace の <strong>Insights ビュー</strong>、最低限 <code>sn_cmdb_user</code> ロールが要る。</p>
+</blockquote>
+<h2>Data Foundations ダッシュボード</h2>
+<p>CMDB/CSDM の<strong>データ基盤がどれだけ整っているか</strong>を段階的に示すダッシュボード。
+CSDM 側は <strong>crawl / walk / run / fly</strong> の成熟ステージ（第5章）に対応するタブで進捗を可視化する。</p>
+<p><strong>主要用語</strong>：CMDB Workspace / Service Graph Workspace / Insights ビュー / Data Foundation(getwell) /
+<code>sn_cmdb_user</code>・<code>sn_cmdb_editor</code>・<code>sn_cmdb_admin</code>。</p></div><div class="sources"><span class="src-h">出典(ServiceNow 公式Docs)</span><ul><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/cmdb-workspace.html" target="_blank" rel="noopener">CMDB Workspace store app</a></li><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/sg-workspace-insights-view.html" target="_blank" rel="noopener">Insights view in Service Graph Workspace</a></li><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/cmdb-data-foundations-dashboard.html" target="_blank" rel="noopener">CMDB Data Foundations dashboard</a></li></ul></div></section><section id="ch2-s2" class="sec"><div class="sec-body"><h2>サービス視点でCMDBを読む</h2>
+<p>CMDBの価値は、CIを<strong>サービスやリレーションの文脈</strong>で見たときに出る。</p>
+<ul>
+<li><strong>サービスマップ / Application service map</strong>：サービスを構成するCIとその依存を図で表示。1つのCIの障害が
+  サービス全体へどう波及するか（インパクト分析）を理解できる。</li>
+<li><strong>CMDB 360 ビュー</strong>（CMDB Workspace）：属性値が<strong>どの discovery source 由来か</strong>を属性レベルで可視化し、
+  ソースの比較・取り消し・再計算を行う（第3章の CMDB 360 のUI入口）。</li>
+<li><strong>Dependency Views / Unified Map</strong>：CI間の関係をたどって影響範囲を把握。</li>
+</ul>
+<h2>CMDB Query Builder</h2>
+<p><strong>CMDB Query Builder</strong> は、複数クラス・複数リレーションにまたがる<strong>横断クエリ</strong>をGUIで組み立てるツール。
+「あるサービスに属し、かつ stale なサーバ」のような<strong>関係をまたぐ問い</strong>に答え、データから洞察を引き出す。</p>
+<h2>ベンチマーク（自組織を客観視する）</h2>
+<p><strong>Benchmarks ダッシュボード</strong>は、CMDB Health メトリクスを基に<strong>月次平均・トレンド・同業他社/グローバル比較</strong>を示す。</p>
+<ul>
+<li>指標：<strong>% 非準拠CI / % 重複CI / % stale CI</strong>。</li>
+<li>前提：<strong>CMDB Health Dashboard ジョブが有効</strong>で健全性データが収集されていること。</li>
+</ul>
+<blockquote class="callout warn">
+<p>📌 <strong>要点</strong>：Insight の出口は「<strong>サービス文脈の可視化（マップ/360/クエリ）</strong>」と「<strong>ベンチマークで他社比較</strong>」。
+健全性スコア（第1章）が、Insightでは"見える化"され、改善アクションに繋がる。</p>
+<p>⚠️ <strong>引っかけ</strong>：ベンチマークの3指標は <strong>非準拠・重複・stale</strong> の割合（月次平均）。
+これらは第1章の Correctness/Compliance メトリクスと対応している。</p>
+</blockquote>
+<p><strong>主要用語</strong>：application service map / CMDB 360 ビュー / Dependency Views・Unified Map /
+CMDB Query Builder / Benchmarks（非準拠・重複・stale の月次平均）。</p></div><div class="sources"><span class="src-h">出典(ServiceNow 公式Docs)</span><ul><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/cmdb-workspace-cmdb360-view.html" target="_blank" rel="noopener">CMDB 360 view in CMDB Workspace</a></li><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/view-cmdb-benchmarks.html" target="_blank" rel="noopener">View CMDB benchmarks</a></li><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/cmdb-query-builder-landing-page.html" target="_blank" rel="noopener">CMDB Query Builder</a></li></ul></div></section><section id="ch2-s3" class="sec"><div class="sec-body"><h2>レポート（データから報告へ）</h2>
+<p>ダッシュボードに加え、CMDB は<strong>レポート</strong>で洞察を共有できる。
+<strong>CMDB Query Builder</strong>（前節）の<strong>クエリ結果からレポートを作成</strong>でき、横断的な問い
+（例：あるサービス配下の stale なサーバ一覧）を定型レポート化して関係者と共有する。</p>
+<h2>CMDB Coverage（網羅度を測る）</h2>
+<p>「Discovery を使っているのに、CMDB が<strong>本当に網羅できているか</strong>分からない」という課題に答える機能。
+<strong>IPAM（IP アドレス管理）システムの IP と、discover 済みCIを相関</strong>させ、<strong>抜け（カバーされていない範囲）</strong>を可視化する。</p>
+<ul>
+<li>IPAM データと discover 済みCIの<strong>突合・相関</strong>。</li>
+<li>IPアドレスのカバー漏れ＝<strong>未発見の領域</strong>をハイライト。</li>
+<li>継続的なカバレッジ追跡、<strong>Discovery スケジュールの抜け検出</strong>（IPAM サブネット vs スケジュール済み範囲）。</li>
+</ul>
+<blockquote class="callout note">
+<p>📌 <strong>要点</strong>：CMDB Coverage は「<strong>入っているデータの健全性</strong>(第1章 Health)」ではなく、
+「<strong>そもそも入っていない領域がないか</strong>(網羅度)」を測る。Health と Coverage は別の問い。
+（Zurich/Australia 以降のアプリ）</p>
+</blockquote>
+<h2>CI の変化（CI Changes / timeline）</h2>
+<p>CIフォームから <strong>CI Changes（変化の履歴）</strong> を見ると、属性やリレーションが<strong>いつ・どのソースで</strong>変わったかを追える。
+監査・トラブルシュート時に「誰が/何が変えたか」を遡れるのが価値。</p>
+<h2>CI の再分類（Reclassification）</h2>
+<p>IRE 処理中、CIが<strong>別の <code>sys_class_name</code>（クラス）に変わるべき</strong>と判定されることがある（reclassification）。</p>
+<ul>
+<li>既定では<strong>自動で再分類</strong>。自動を無効化すると、<strong>reclassification タスク</strong>が生成されレビュー対象になる。</li>
+<li>クラスは <strong>upgrade / downgrade / switch（別ブランチへ）</strong> のいずれかで変わる。</li>
+<li>関連プロパティ：<code>glide.class.upgrade.enabled</code> / <code>downgrade.enabled</code> / <code>switch.enabled</code>（既定 true）。</li>
+</ul>
+<blockquote class="callout warn">
+<p>⚠️ <strong>引っかけ</strong>：<strong>再分類は「識別ルールが同一」のクラス間でしか行えない</strong>。
+識別ルールが異なるクラスへは再分類できない、という制約が問われやすい。</p>
+</blockquote>
+<p><strong>主要用語</strong>：クエリ結果レポート / CMDB Coverage（IPAM相関・網羅度）/ CI Changes /
+reclassification（upgrade・downgrade・switch、識別ルール同一が条件）。</p></div><div class="sources"><span class="src-h">出典(ServiceNow 公式Docs)</span><ul><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/cmdb-coverage-explore.html" target="_blank" rel="noopener">Exploring CMDB Coverage</a></li><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/c_CIReclassification.html" target="_blank" rel="noopener">Configure CI reclassification during IRE processing</a></li><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/t_ViewCIChanges.html" target="_blank" rel="noopener">View CI changes</a></li></ul></div></section></div><div id="ch3" class="chapter"><h1 class="ch-title">Ingestion <span class="wt">19%</span></h1><section id="ch3-s1" class="sec"><div class="sec-body"><h2>IRE とは</h2>
+<p><strong>IRE（Identification and Reconciliation Engine）</strong> は、さまざまなデータソースからの入力を
+<strong>CMDBに書き込む前に処理する中央フレームワーク</strong>。CMDBの<strong>ゲートキーパー</strong>であり、データ整合性を保つ。</p>
+<ul>
+<li><strong>Identification（識別）</strong>：CIを一意に識別して <strong>重複CIの作成を防ぐ</strong>。</li>
+<li><strong>Reconciliation（突合）</strong>：<strong>権威あるデータソースだけに属性の書き込みを許可</strong>し、ソース同士の上書き合戦を防ぐ。</li>
+</ul>
+<p>IRE は <strong>識別ルール / 突合ルール / IRE データソースルール</strong> を使って、入力(payload)を処理する。
+Service Mapping・horizontal/pattern discovery は API 経由で IRE を通す。Import Set のデータにも適用でき、
+サードパーティは REST / スクリプタブル IRE API（<code>createOrUpdateCI()</code> など）で識別・突合を実行する。</p>
+<blockquote class="callout note">
+<p>📌 <strong>要点</strong>：CMDBへ入るデータは基本すべて IRE を通る。「重複を防ぐ＝識別」「正しいソースの値だけ通す＝突合」
+という2役を1つのエンジンが担う、と押さえる。</p>
+</blockquote>
+<h2>識別の流れ（payload）</h2>
+<p>IRE は入力 payload の各項目に<strong>識別子キー</strong>を生成して照合する。識別子キーは次のいずれかに基づく：</p>
+<ul>
+<li><strong><code>source_name</code> ＋ <code>source_native_key</code></strong>（<code>sys_object_source_info</code>）による高速識別。
+  Source [<code>sys_object_source</code>] テーブルで一意識別できれば、識別ルールの照合アルゴリズム（低速）を省ける。</li>
+<li><strong>識別ルールの criterion 属性</strong>による識別。</li>
+</ul>
+<figure class="diagram">
+<svg viewBox="0 0 640 150" role="img" aria-label="IREの識別→突合→CMDBの流れ">
+  <defs><marker id="ah" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" class="ahfill"/></marker></defs>
+  <rect class="box" x="8" y="48" width="104" height="44" rx="8"/><text class="t" x="60" y="74" text-anchor="middle">payload</text>
+  <path class="arrow" d="M114 70 H150"/>
+  <rect class="box root" x="152" y="48" width="140" height="44" rx="8"/><text class="tw" x="222" y="67" text-anchor="middle">① 識別</text><text class="tw" x="222" y="83" text-anchor="middle">Identification</text>
+  <text class="sub" x="222" y="112" text-anchor="middle">一致=更新 / 不一致=新規(重複防止)</text>
+  <path class="arrow" d="M294 70 H330"/>
+  <rect class="box root" x="332" y="48" width="140" height="44" rx="8"/><text class="tw" x="402" y="67" text-anchor="middle">② 突合</text><text class="tw" x="402" y="83" text-anchor="middle">Reconciliation</text>
+  <text class="sub" x="402" y="112" text-anchor="middle">権威ソースのみ書込</text>
+  <path class="arrow" d="M474 70 H510"/>
+  <rect class="box" x="512" y="48" width="118" height="44" rx="8"/><text class="t" x="571" y="74" text-anchor="middle">CMDB</text>
+</svg>
+<figcaption>図: IRE は <b>①識別（重複防止）→ ②突合（権威ソース選択）</b> の順で処理して CMDB に書く。</figcaption>
+</figure>
+
+<blockquote class="callout warn">
+<p>⚠️ <strong>引っかけ</strong>：<code>source_name</code>/<code>source_native_key</code> があれば識別ルールより<strong>先に</strong>使われる（高速経路）。
+ただし <code>glide.identification_engine.skip_sys_object_source_matching</code> で識別ルール優先に変更できる。</p>
+</blockquote>
+<h2>依存CIは「文脈」で識別する</h2>
+<p>識別は <strong>CIの依存分類（independent / dependent）</strong> に依存する。dependent CI は単独では一意識別できないため、
+<strong>まず親（host）を識別し、その文脈で</strong>子を識別する。</p>
+<p>例：Windows Server（independent）上で動く Tomcat（dependent）は、<code>config file path</code> だけでは
+複数マシンで同一になり得て一意にできない。<strong>先に Windows Server を識別 → その上で Tomcat を識別</strong>する。</p>
+<details>
+<summary>🔧 深掘り：タイムスタンプによる新旧判定（last_discovered / first_discovered）</summary>
+<p>IRE は競合する属性値の解決にタイムスタンプを使い、現行より古いレコードは無視する。</p>
+<ul>
+<li><strong><code>last_discovered</code></strong> … 最後に discover された時刻。IRE は payload 処理のたびに（他属性が変わらなくても）この値と <code>discovery_source</code> を更新する。payload に値があれば、それが CMDB より<strong>新しいときだけ</strong>採用（無ければ現在時刻）。</li>
+<li><strong><code>first_discovered</code></strong> … 最初に作成された時刻。新規作成時は payload 値（無ければ現在時刻）。以降の更新では payload に値があれば更新、無ければ据え置き。</li>
+</ul>
+<p>この仕組みで「古いソースの値で新しい値を上書きする」事故を防ぐ。挙動は <code>glide.identification_engine.skip_updating_source_last_discovered_if_older</code> 等のプロパティで変更可能。</p>
+</details>
+<p><strong>主要テーブル/用語</strong>：payload / <code>createOrUpdateCI()</code> / <code>sys_object_source</code> /
+<code>cmdb_ire_partial_payloads_index</code> / <code>last_discovered</code>・<code>first_discovered</code>（タイムスタンプで新旧判定）。</p></div><div class="sources"><span class="src-h">出典(ServiceNow 公式Docs)</span><ul><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/ire.html" target="_blank" rel="noopener">Identification and Reconciliation Engine (IRE)</a></li><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/c_CMDBIdentifyandReconcile.html" target="_blank" rel="noopener">CMDB Identify and Reconcile</a></li></ul></div></section><section id="ch3-s2" class="sec"><div class="sec-body"><h2>識別ルール（Identification Rules）</h2>
+<p>識別ルールは<strong>1つのCIクラスに適用</strong>され、<strong>1つの CI identifier</strong> と、<strong>優先度付きの identifier entry / related entry</strong> から成る。
+強い識別子ほど高い優先度を与えるのが定石。</p>
+<ul>
+<li><strong>Unique attributes（一意属性）</strong>：CIを一意に識別できる criterion 属性の組（同一/派生テーブルから取れる）。</li>
+<li><strong>Required attributes（必須属性）</strong>：空であってはならない属性。</li>
+<li><strong>identifier entry の2方式</strong>：</li>
+<li><em>field-based</em>：CI自身の属性で照合。</li>
+<li><em>lookup-based</em>：関連リスト（Serial Numbers, Network Adapters 等）で照合。ルックアップ表は <code>cmdb_ci</code> への参照フィールドが必要。</li>
+</ul>
+<h3>階層の継承（最頻出）</h3>
+<p>子クラスに固有の識別ルールが<strong>無ければ親クラスから継承</strong>する。
+子に固有ルールを作ると、<strong>継承していた親ルール（related entry 含む）は無効</strong>になる
+→ 必要な entry は新ルールに<strong>明示的に再追加</strong>する必要がある。</p>
+<blockquote class="callout warn">
+<p>⚠️ <strong>引っかけ</strong>：「子クラスに識別ルールを新規作成」したら、親から継承していた entry は<strong>消える</strong>。
+同じ related entry が要るなら手動で足し直す。</p>
+</blockquote>
+<h3>independent / dependent 識別ルール</h3>
+<ul>
+<li><strong>independent rule</strong>：CI自身の属性だけで識別（Server など）。</li>
+<li><strong>dependent rule</strong>：<strong>先に親CIを識別してから</strong>子を識別。dependent CI が持てる<strong>親（dependency）は1つだけ</strong>。
+  関係タイプも識別に含まれる。依存連鎖は <strong>dependent relationship</strong> で定義する。</li>
+</ul>
+<h2>突合ルール（Reconciliation Rules）</h2>
+<p>突合ルールは「<strong>どの discovery source が CI属性を更新できるか</strong>」を決める。無いとソース同士で上書きが起きる。</p>
+<table>
+<thead>
+<tr>
+<th>種類</th>
+<th>仕組み</th>
+<th>格納</th>
+<th>補足</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Static</strong></td>
+<td>discovery source に<strong>優先度</strong>を設定。親→子へ継承</td>
+<td><code>cmdb_reconciliation_definition</code></td>
+<td>Attributes 空欄＝全属性対象</td>
+</tr>
+<tr>
+<td><strong>Dynamic</strong></td>
+<td><strong>CMDB 360</strong> の値ベース（最大値/最多報告値などを選択）</td>
+<td><code>cmdb_dynamic_reconciliation_definition</code></td>
+<td>クラス属性あたり<strong>1つだけ</strong>・CMDB 360 有効化が前提</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="callout warn">
+<p>⚠️ <strong>引っかけ最重要</strong>：同一属性に Static と Dynamic の両方があると、<strong>Dynamic が優先</strong>する。
+また Dynamic は <strong>CMDB 360 を有効化</strong>しないと使えない（次節）。</p>
+</blockquote>
+<p><strong>主要用語</strong>：CI identifier / identifier entry（優先度）/ related entry / criterion attribute /
+discovery source / 継承(derivation) / qualifier chain。</p></div><div class="sources"><span class="src-h">出典(ServiceNow 公式Docs)</span><ul><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/c_IdentificationRules.html" target="_blank" rel="noopener">Identification rules</a></li><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/r_ReconciliationRulesPrinciples.html" target="_blank" rel="noopener">Reconciliation rules</a></li><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/t_CreateCIIdentificationRule.html" target="_blank" rel="noopener">Create a CI identification rule</a></li></ul></div></section><section id="ch3-s3" class="sec"><div class="sec-body"><h2>CMDB 360（旧 Multisource CMDB）</h2>
+<p>複数の discovery source が<strong>同じCI属性</strong>を更新しようとすると、IRE は突合ルールで<strong>1つのソースを選ぶ</strong>。
+通常は、選ばれなかった（低優先度）ソースの値は<strong>捨てられ</strong>、後から「この値はどのソース由来か」を追うのが難しい。</p>
+<p><strong>CMDB 360</strong> は、<strong>選ばれた/選ばれなかった全ソースの生データを属性レベルで保持</strong>する。
+これにより、ソース別の寄与の可視化・特定ソースの取り消し・ルール変更後の再計算ができる。</p>
+<ul>
+<li><strong>格納</strong>：CMDB MultiSource Data [<code>cmdb_multisource_data</code>] テーブル（ソース×CIの組ごとに1レコード）。</li>
+<li><strong>できること</strong>：</li>
+<li><strong>Dynamic reconciliation rule</strong> の作成（前節）。</li>
+<li>属性値のソースを属性レベルで<strong>可視化</strong>。</li>
+<li>突合ルールを変更 → CMDBを<strong>再計算(recompute)</strong>。</li>
+<li>信頼できないソースの取り込みを<strong>revert（取り消し）</strong>して再計算。</li>
+<li>新ソースを既知の正しいソースと<strong>比較して検証</strong>。</li>
+<li><strong>非CMDBテーブルも対象にできる</strong>（既定はCMDBクラスのみ収集）。</li>
+</ul>
+<h3>有効化</h3>
+<ol>
+<li><strong>ITOM Discovery License</strong>（<code>com.snc.itom.discovery.license</code>）プラグインを有効化。</li>
+<li><strong>All &gt; Configuration &gt; CMDB 360 Properties</strong> で <code>glide.identification_engine.multisource_enabled</code> を <strong>true</strong>。</li>
+<li>任意で特定クラス（と子孫）を CMDB 360 から除外。</li>
+</ol>
+<blockquote class="callout note">
+<p>📌 <strong>要点</strong>：Dynamic reconciliation は CMDB 360 の上に成り立つ。
+「複数ソースの値を履歴保持して最良値を選ぶ/後から直せる」のが CMDB 360。
+アクセスは <strong>CMDB Workspace の CMDB 360 ビュー</strong> か <strong>Service Graph Workspace の CMDB 360 インサイト</strong>。</p>
+</blockquote>
+<p><strong>主要テーブル/プロパティ</strong>：<code>cmdb_multisource_data</code> / <code>glide.identification_engine.multisource_enabled</code> /
+<code>glide.identification_engine.multisource_cmdb_ci_enabled</code>。</p></div><div class="sources"><span class="src-h">出典(ServiceNow 公式Docs)</span><ul><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/multisource-cmdb.html" target="_blank" rel="noopener">CMDB 360 (Multisource CMDB)</a></li><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/components-multisource-cmdb.html" target="_blank" rel="noopener">Components related to CMDB 360</a></li></ul></div></section></div><div id="ch4" class="chapter"><h1 class="ch-title">Configuration <span class="wt">15%</span></h1><section id="ch4-s1" class="sec"><div class="sec-body"><h2>CI Class Manager とは</h2>
+<p><strong>CI Class Manager</strong> は、CMDBクラスに関わる定義・設定を<strong>一元管理する中央ハブ</strong>。
+アクセスは <strong>All &gt; Configuration &gt; CI Class Manager</strong>。</p>
+<p>ここから扱えるもの（＝この章・他章の設定の入口）：</p>
+<ul>
+<li><strong>クラス基本</strong>：クラスの作成・閲覧・編集、列(属性)、CIの表示・削除、<strong>Suggested relationship の追加</strong>、Principal Class フィルタ更新。</li>
+<li><strong>IRE</strong>（第3章）：<strong>識別ルール / 識別 inclusion ルール / 突合ルール / Data refresh ルール / 依存関係ルール（hosting・containment）</strong>。</li>
+<li><strong>CMDB Health</strong>（第1章）：compliance 監査、certification テンプレート、<strong>orphan / staleness ルール</strong>、
+  属性の <strong>mandatory / recommended</strong> 指定、health inclusion ルール。</li>
+<li><strong>Service Mapping</strong>：エントリポイント種別、Discovery/SM 用のCIタイプ。</li>
+</ul>
+<blockquote class="callout warn">
+<p>⚠️ <strong>引っかけ</strong>：CI Class Manager は <strong>非CMDBテーブルを扱えない</strong>。
+また「識別ルール・健全性ルール・依存関係をどこで設定する？」→ <strong>CI Class Manager</strong> が定番の答え。</p>
+</blockquote>
+<h2>クラスモデル（CI Class Models）</h2>
+<p>ServiceNow は多数の<strong>標準CIクラス</strong>（クラスモデル）を提供し、<code>cmdb_ci</code> を頂点とする<strong>テーブル継承階層</strong>を成す。
+クラスは拡張でき、識別ルール・突合ルール・健全性設定は<strong>親→子へ継承</strong>される（第3章の継承と同じ考え方）。</p>
+<blockquote class="callout note">
+<p>📌 <strong>要点</strong>：CMDB の「構造（クラス階層・属性・依存）」を司るのが CI Class Manager。
+第1章(健全性)・第3章(IRE)の各種ルールも、実体はこのハブで設定する。</p>
+</blockquote>
+<p><strong>主要用語</strong>：class（テーブル）/ 属性(column) / 継承(extension) / Principal Class / Suggested relationship /
+hosting・containment ルール。</p></div><div class="sources"><span class="src-h">出典(ServiceNow 公式Docs)</span><ul><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/ci-class-manager-landing-page.html" target="_blank" rel="noopener">CI Class Manager</a></li><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/cmdb-ci-class-models/cmdb-ci-class-models.html" target="_blank" rel="noopener">CMDB CI class models</a></li></ul></div></section><section id="ch4-s2" class="sec"><div class="sec-body"><h2>リレーションの構造</h2>
+<p>CMDB はCIだけでなく<strong>CI間のリレーション</strong>を追跡する。リレーションは必ず3要素：
+<strong>Parent CI ＋ Child CI ＋ Relationship type</strong>。</p>
+<p>例：<code>[Server1] [Managed by] [Server2]</code> は <strong>Server1=child / Server2=parent / 「Managed by」=type</strong>。</p>
+<figure class="diagram">
+<svg viewBox="0 0 600 110" role="img" aria-label="リレーションのparent/child方向の図">
+  <defs><marker id="ah" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" class="ahfill"/></marker></defs>
+  <rect class="box" x="20" y="34" width="200" height="44" rx="8"/><text class="t" x="120" y="54" text-anchor="middle">Server1</text><text class="sub" x="120" y="71" text-anchor="middle">child（子）</text>
+  <path class="arrow" d="M222 56 H376"/>
+  <text class="sub" x="300" y="46" text-anchor="middle">Managed by（type）</text>
+  <rect class="box" x="380" y="34" width="200" height="44" rx="8"/><text class="t" x="480" y="54" text-anchor="middle">Server2</text><text class="sub" x="480" y="71" text-anchor="middle">parent（親）</text>
+</svg>
+<figcaption>図: <code>[Server1][Managed by][Server2]</code> → Server1=<b>child</b>・Server2=<b>parent</b>。読み方は「child–type–parent」。</figcaption>
+</figure>
+
+<blockquote class="callout warn">
+<p>⚠️ <strong>引っかけ</strong>：parent/child は直感と逆になりやすい。リレーション文の読み方
+「<strong>child – type – parent</strong>」を、上の Managed by の例で固定しておく。</p>
+</blockquote>
+<p>リレーションは Discovery で自動作成されるほか、CIフォームの <strong>CI relationship editor</strong> や
+<strong>Unified Map</strong>（CMDB Workspace）で手動作成・編集できる。実体は CI Relationship [<code>cmdb_rel_ci</code>] テーブル。</p>
+<h2>Dependent と Non-dependent</h2>
+<table>
+<thead>
+<tr>
+<th>種別</th>
+<th>用途</th>
+<th>削除</th>
+<th>備考</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Dependent</strong>（例: Tomcat <em>RunsOn</em> Hardware）</td>
+<td><strong>IRE の識別に使う</strong>（依存CIを文脈で一意化）</td>
+<td><strong>直接削除しない</strong>（追跡されない）</td>
+<td>hosting / containment ルール</td>
+</tr>
+<tr>
+<td><strong>Non-dependent</strong></td>
+<td>単なる関連の記録</td>
+<td>不要になれば削除可</td>
+<td>ソースは <code>sys_rel_source</code> に記録</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Non-dependent</strong> のソース履歴 Relationship Sources [<code>sys_rel_source</code>] は、IRE負荷軽減のため<strong>既定で自動格納しない</strong>
+  （<code>glide.identification_engine.populate_sys_rel_source</code> で有効化可）。<code>cmdb_rel_ci</code> の非依存リレーション削除時は
+  対応する <code>sys_rel_source</code> レコードもカスケード削除。</li>
+</ul>
+<blockquote class="callout note">
+<p>📌 <strong>要点</strong>：依存関係＝<strong>IREの識別材料</strong>だから安易に消さない。非依存＝表示・管理用で消してよい、と覚える。</p>
+</blockquote>
+<h2>Suggested Relationships</h2>
+<p><strong>Suggested relationship</strong> は「このクラス間にはこの型のリレーションが<strong>あるべき</strong>」というモデル定義。
+CI Class Manager で追加し、<strong>CMDB Health のリレーション健全性</strong>（第1章）で「suggested に準拠していない」関係を検出できる。
+hosting / containment ルールも、あるべき構造を表す。</p>
+<p><strong>主要テーブル/用語</strong>：<code>cmdb_rel_ci</code> / <code>sys_rel_source</code> / relationship type / dependent relationship /
+suggested relationship / hosting・containment / CI relationship editor・Unified Map。</p></div><div class="sources"><span class="src-h">出典(ServiceNow 公式Docs)</span><ul><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/c_CIRelationships.html" target="_blank" rel="noopener">CI relationships in the CMDB</a></li><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/create-dependent-relationship.html" target="_blank" rel="noopener">Create a dependent relationship</a></li><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/r_SuggestedRelationshipModel.html" target="_blank" rel="noopener">Suggested relationship model</a></li></ul></div></section><section id="ch4-s3" class="sec"><div class="sec-body"><h2>Dynamic CI Group</h2>
+<p><strong>Dynamic CI Group</strong> は、<strong>共通の属性・条件（クエリ）で動的に集まるCIの集合</strong>。
+Incident / Problem / Change のレコードの <strong>CI フィールドにグループCIとして</strong>使える。</p>
+<ul>
+<li>クエリで定義（共通属性・条件ベース）。</li>
+<li><strong>グループの中にグループは入れられない</strong>（CIのみ）。</li>
+<li>1つのCIは複数のクエリに一致しうる → <strong>複数のグループに所属可</strong>（所属数に上限なし）。</li>
+<li>Technology management サービス用途では <strong>最大10,000件</strong>の類似CIをまとめられる。</li>
+</ul>
+<h2>Service Classification で用途が変わる</h2>
+<p><strong>Service Classification</strong> 属性がサービスの種別を決め、dynamic CI group の使い方が変わる：</p>
+<ul>
+<li><strong>Technology management service</strong>（旧 Technical service）：個別管理されるCIの集合。互いに関連しないため
+  <strong>サービス関連付け不要・インパクト分析は対象外</strong>。例：特定OSのサーバ群、拠点別ネットワーク機器。</li>
+<li><strong>Service instance</strong>（旧 application service）：1つのCIが影響を受けると<strong>グループ全体が影響</strong>を受けるため、
+  <strong>サービス関連付けが必須・インパクト分析が重要</strong>。</li>
+</ul>
+<h2>Group Sync（ownership synchronization）</h2>
+<p><strong>Technology management offering</strong> または <strong>CI Class Manager</strong> で <strong>group assignment attributes（グループ割当属性）</strong> を設定すると、
+<strong>ownership synchronization</strong> が、指定したCIクラス／CI群の<strong>全CIへグループ属性を同期</strong>する。</p>
+<p>これにより、あるユーザーグループに「このCI群／クラスの管理権限」を与えられる。
+典型的に同期されるのは <strong>Support group</strong> や <strong>Managed by group</strong> などのグループ割当。</p>
+<blockquote class="callout warn">
+<p>⚠️ <strong>引っかけ（問題集 #1 と直結）</strong>：Dynamic CI Group とリレーションを持つ <strong>Technical Service Offering</strong> から
+メンバーCIへ同期されるのは <strong>Support group</strong> と <strong>Managed by group</strong>。Approval / Owned by は同期対象外。</p>
+<p>📌 <strong>要点</strong>：Group Sync ＝「オファリング(またはCI Class Manager)で決めたグループ割当を、配下CIへ一括同期」。
+同期の入口は <strong>Technology management offering / CI Class Manager</strong>、設定対象は <strong>group assignment attributes</strong>。</p>
+</blockquote>
+<p><strong>主要用語</strong>：dynamic CI group / Service Classification / Technology management service・offering /
+service instance / ownership synchronization / group assignment attributes（Support / Managed by）。</p></div><div class="sources"><span class="src-h">出典(ServiceNow 公式Docs)</span><ul><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/common-service-data-model-csdm/csdm-dynamic-ci-groups-by-service.html" target="_blank" rel="noopener">Matching the usage of dynamic CI groups to service type</a></li><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/common-service-data-model-csdm/csdm-data-synchronize.html" target="_blank" rel="noopener">Synchronizing group assignment attributes</a></li><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/configuration-management-database-cmdb/cmdb-groups.html" target="_blank" rel="noopener">CMDB groups</a></li></ul></div></section></div><div id="ch5" class="chapter"><h1 class="ch-title">CSDM Fundamentals <span class="wt">11%</span></h1><section id="ch5-s1" class="sec"><div class="sec-body"><h2>CSDM とは</h2>
+<p><strong>CSDM（Common Service Data Model）</strong> は、管理者が ServiceNow 製品をセットアップする際に<strong>従うべきデータモデルの標準</strong>。
+CIとリレーションを<strong>適切なCMDBテーブルに配置</strong>するルールを定め、プラットフォーム全体で一貫した
+レポート・分析を可能にする。CSDM は新しいテーブルではなく、<strong>既存CMDBの上の"使い方の標準"</strong>。</p>
+<h2>データドメイン（CSDM v5）</h2>
+<p>CSDM の概念モデルは複数の<strong>ドメイン（責務の層）</strong>で構成される。各ボックスはCIを保持するCMDBテーブル群、
+線はクラス間リレーションを表す。</p>
+<table>
+<thead>
+<tr>
+<th>ドメイン</th>
+<th>役割</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Foundation</strong></td>
+<td>他ドメインから参照される<strong>基礎データ</strong>。製品利用前に<strong>最初に投入</strong>が必要</td>
+</tr>
+<tr>
+<td><strong>Ideation &amp; Strategy</strong></td>
+<td>サービスの着想・戦略（SPM 領域）</td>
+</tr>
+<tr>
+<td><strong>Design &amp; Planning</strong></td>
+<td>買う/作るデジタル製品の設計・計画</td>
+</tr>
+<tr>
+<td><strong>Build &amp; Integration</strong></td>
+<td>開発中の論理的成果（<strong>運用CIではない</strong>）</td>
+</tr>
+<tr>
+<td><strong>Service Delivery</strong></td>
+<td>インフラ〜運用までのエンドツーエンド提供系</td>
+</tr>
+<tr>
+<td><strong>Service Consumption</strong></td>
+<td>カタログ経由でビジネスサービスを要求・消費</td>
+</tr>
+<tr>
+<td><strong>Manage Portfolio</strong></td>
+<td>他ドメインを横断する管理層（service owner）</td>
+</tr>
+</tbody>
+</table>
+<figure class="diagram">
+<svg viewBox="0 0 640 208" role="img" aria-label="CSDMドメインの層構造の図">
+  <defs><marker id="ah" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" class="ahfill"/></marker></defs>
+  <rect class="box" x="12" y="12" width="616" height="30" rx="6"/><text class="t" x="320" y="32" text-anchor="middle">Manage Portfolio（全ドメイン横断）</text>
+  <rect class="box" x="12" y="92" width="116" height="46" rx="6"/><text class="t" x="70" y="112" text-anchor="middle">Ideation</text><text class="sub" x="70" y="128" text-anchor="middle">&amp; Strategy</text>
+  <rect class="box" x="136" y="92" width="116" height="46" rx="6"/><text class="t" x="194" y="112" text-anchor="middle">Design</text><text class="sub" x="194" y="128" text-anchor="middle">&amp; Planning</text>
+  <rect class="box" x="260" y="92" width="116" height="46" rx="6"/><text class="t" x="318" y="112" text-anchor="middle">Build</text><text class="sub" x="318" y="128" text-anchor="middle">&amp; Integration</text>
+  <rect class="box" x="384" y="92" width="116" height="46" rx="6"/><text class="t" x="442" y="112" text-anchor="middle">Service</text><text class="sub" x="442" y="128" text-anchor="middle">Delivery</text>
+  <rect class="box" x="508" y="92" width="116" height="46" rx="6"/><text class="t" x="566" y="112" text-anchor="middle">Service</text><text class="sub" x="566" y="128" text-anchor="middle">Consumption</text>
+  <path class="arrow" d="M129 115 H135"/><path class="arrow" d="M253 115 H259"/><path class="arrow" d="M377 115 H383"/><path class="arrow" d="M501 115 H507"/>
+  <rect class="box hlbox" x="12" y="168" width="616" height="30" rx="6"/><text class="t" x="320" y="188" text-anchor="middle">Foundation（基礎データ・最初に投入）</text>
+</svg>
+<figcaption>図: CSDM のドメイン層。<b>Foundation</b> を土台に価値連鎖（Ideation→…→Consumption）、上に <b>Manage Portfolio</b> が横断。</figcaption>
+</figure>
+
+<h2>サービス種別（最重要）</h2>
+<ul>
+<li><strong>Technology management service</strong> [<code>cmdb_ci_service_technical</code>]（<strong>旧 Technical service</strong>）</li>
+<li><strong>運用CI</strong>。<strong>1階層のみ</strong>（Technology management service の階層は作らない）。</li>
+<li><strong>Incident / Problem / Change のインパクト</strong>に使い、<strong>Change の承認</strong>にも使う。</li>
+<li>provider 視点（提供する技術）。</li>
+<li><strong>Business service / Service instance（旧 application service）</strong> … 消費者視点・サービス単位。</li>
+</ul>
+<blockquote class="callout warn">
+<p>⚠️ <strong>引っかけ</strong>：CSDM v5 で <strong>「Technical service」→「Technology management service」</strong> に改称。
+Technology management service は <strong>operational CI かつ 1レベル</strong>（階層化しない）。</p>
+<p>📌 <strong>v4 → v5 の主な差</strong>：用語刷新（Technology management service 等）、<strong>ライフサイクル value pair</strong>
+(stage＋status, 次節)、<strong>Asset/CI/IBI を product instance として整合</strong>（IBI 概念の前面化）。</p>
+</blockquote>
+<p><strong>主要テーブル/用語</strong>：<code>cmdb_ci_service_technical</code> / business service / service instance /
+Foundation domain / Manage Portfolio / service の3要素（interaction・offering・service system）。</p></div><div class="sources"><span class="src-h">出典(ServiceNow 公式Docs)</span><ul><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/common-service-data-model-csdm/csdm-conceptual-model.html" target="_blank" rel="noopener">CSDM data domains</a></li><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/common-service-data-model-csdm/csdm-term-definitions.html" target="_blank" rel="noopener">CSDM term definitions</a></li></ul></div></section><section id="ch5-s2" class="sec"><div class="sec-body"><h2>ライフサイクル value pair</h2>
+<p>CSDM はCIの状態を <strong>life-cycle value pair = 「life cycle stage」＋「life cycle stage status」</strong> で表す。
+この2値の組で、製品インスタンスのライフサイクル状態を<strong>完全に記述</strong>する。</p>
+<figure class="diagram">
+<svg viewBox="0 0 640 116" role="img" aria-label="ライフサイクル value pair の図">
+  <rect class="box" x="14" y="30" width="180" height="50" rx="8"/><text class="t" x="104" y="52" text-anchor="middle">life cycle stage</text><text class="sub" x="104" y="70" text-anchor="middle">大段階 例: Operational</text>
+  <text class="t" x="208" y="61" text-anchor="middle">＋</text>
+  <rect class="box" x="224" y="30" width="180" height="50" rx="8"/><text class="t" x="314" y="52" text-anchor="middle">stage status</text><text class="sub" x="314" y="70" text-anchor="middle">細状態 例: In Use</text>
+  <text class="t" x="418" y="61" text-anchor="middle">＝</text>
+  <rect class="box root" x="434" y="30" width="192" height="50" rx="8"/><text class="tw" x="530" y="52" text-anchor="middle">value pair</text><text class="tw" x="530" y="70" text-anchor="middle">状態を完全記述</text>
+</svg>
+<figcaption>図: <b>life cycle stage ＋ stage status ＝ value pair</b>。2値の組で1つの状態を完全に表す。</figcaption>
+</figure>
+
+<ul>
+<li><strong>life cycle stage</strong>：CIが通る<strong>大きな段階</strong>（例：調達 → 運用 → 廃止）。</li>
+<li><strong>life cycle stage status</strong>：現ステージ内の<strong>細かい状態</strong>。
+  例：tangible/physical CI が <strong>Operational</strong> ステージで <code>In Use → In Maintenance → End of Support</code> と推移
+  （<code>In Maintenance</code> を経ず <code>In Use → End of Support</code> もあり得る）。</li>
+</ul>
+<blockquote class="callout warn">
+<p>⚠️ <strong>引っかけ</strong>：「stage」と「status」は別物。stage＝大段階、status＝その中の状態。<strong>ペアで1つの状態</strong>を表す。</p>
+</blockquote>
+<h3>レガシー値（旧来の状態）</h3>
+<p>value pair 導入前は次の値で状態管理していた（v4以前〜互換）：
+<strong>install status / operational status / hardware status / hardware substatus</strong>。</p>
+<h2>Asset・CI・IBI と Product Instance</h2>
+<table>
+<thead>
+<tr>
+<th>用語</th>
+<th>テーブル</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CI</strong></td>
+<td><code>cmdb_ci</code></td>
+<td>構成アイテム</td>
+</tr>
+<tr>
+<td><strong>asset</strong></td>
+<td><code>alm_asset</code></td>
+<td>本番資産</td>
+</tr>
+<tr>
+<td><strong>IBI（Install Base Item）</strong></td>
+<td><code>sn_install_base_item</code></td>
+<td>サービス提供/販売する対象として追跡する項目</td>
+</tr>
+<tr>
+<td><strong>Product Instance (PI)</strong></td>
+<td>—</td>
+<td><strong>Asset＋CI＋IBI</strong> の論理グループ（Asset+CI や Asset+IBI の形もあり）</td>
+</tr>
+</tbody>
+</table>
+<p>Model category テーブルが、同一アイテムの Asset / CI / IBI を関連付ける。</p>
+<h2>life_cycle_mapping（レガシー → CSDM）</h2>
+<p>ベースシステムの <strong>life cycle mapping [<code>life_cycle_mapping</code>]</strong> テーブルは、よく使われる<strong>レガシー状態値</strong>を
+等価な <strong>CSDM value pair</strong> に対応づける<strong>マッピングルール</strong>を持つ（プリセット済み）。</p>
+<ul>
+<li>クラスごとに複数ルールがあり、<strong>優先度</strong>付き。複数該当時は<strong>最優先ルール</strong>が使われる。</li>
+<li>Asset / CI / IBI のライフサイクル値は、business rule で<strong>相互に同期</strong>される。</li>
+</ul>
+<blockquote class="callout note">
+<p>📌 <strong>要点（継承の罠）</strong>：ライフサイクル定義(<code>life_cycle_control</code>)は <strong>aggregation ベースの継承</strong>
+＝子クラスは親の定義を<strong>上書きせず結合（拡張）</strong>する。だから Business Application に
+ハード向けの stage（Deploy/Inventory 等）が混じって見えることがある（仕様）。
+一方 <strong><code>sys_choice</code> の継承は子が親を上書き</strong>する——この違いが問われやすい。</p>
+</blockquote>
+<p><strong>主要テーブル</strong>：<code>life_cycle_mapping</code> / <code>life_cycle_control</code> / <code>alm_asset</code> / <code>sn_install_base_item</code> / Model category。</p></div><div class="sources"><span class="src-h">出典(ServiceNow 公式Docs)</span><ul><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/common-service-data-model-csdm/csdm-life-cyle-terms.html" target="_blank" rel="noopener">CSDM life-cycle terms</a></li><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/common-service-data-model-csdm/csdm-life-cycle-standard-values.html" target="_blank" rel="noopener">Map legacy status values to CSDM life-cycle values</a></li></ul></div></section><section id="ch5-s3" class="sec"><div class="sec-body"><h2>段階的実装：Foundation → Crawl → Walk → Run → Fly</h2>
+<p>CSDM は<strong>一度に全部ではなく段階導入</strong>する。人の成長になぞらえた5段階で、各段階は前段階の上に積み上がる。</p>
+<figure class="diagram">
+<svg viewBox="0 0 640 195" role="img" aria-label="CSDM実装ステージのはしご図">
+  <defs><marker id="ah" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" class="ahfill"/></marker></defs>
+  <rect class="box hlbox" x="8" y="150" width="115" height="30" rx="6"/><text class="t" x="65" y="170" text-anchor="middle">Foundation</text>
+  <rect class="box" x="133" y="120" width="115" height="30" rx="6"/><text class="t" x="190" y="140" text-anchor="middle">Crawl</text>
+  <rect class="box" x="258" y="90" width="115" height="30" rx="6"/><text class="t" x="315" y="110" text-anchor="middle">Walk</text>
+  <rect class="box" x="383" y="60" width="115" height="30" rx="6"/><text class="t" x="440" y="80" text-anchor="middle">Run</text>
+  <rect class="box" x="508" y="30" width="120" height="30" rx="6"/><text class="t" x="568" y="50" text-anchor="middle">Fly</text>
+  <path class="arrow" d="M123 156 L133 144"/>
+  <path class="arrow" d="M248 126 L258 114"/>
+  <path class="arrow" d="M373 96 L383 84"/>
+  <path class="arrow" d="M498 66 L508 54"/>
+</svg>
+<figcaption>図: 段階導入 <b>Foundation → Crawl → Walk → Run → Fly</b>。各段は前段の上に積む（Foundation が必須の土台）。</figcaption>
+</figure>
+
+<table>
+<thead>
+<tr>
+<th>ステージ</th>
+<th>主に扱うデータ</th>
+<th>ねらい</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Foundation</strong></td>
+<td>参照用の<strong>基礎データ</strong>（拠点・会社・グループ・モデル等）</td>
+<td>正確なレポートの土台。<strong>最初に必須</strong></td>
+</tr>
+<tr>
+<td><strong>Crawl</strong></td>
+<td><strong>ITSM</strong> 関連のベースCMDBテーブル</td>
+<td>ITSM が回る最低限のCMDB</td>
+</tr>
+<tr>
+<td><strong>Walk</strong></td>
+<td>ネットワークインフラCI・技術チームが支えるアプリ</td>
+<td>技術サービスの可視化</td>
+</tr>
+<tr>
+<td><strong>Run</strong></td>
+<td>技術と、それを<strong>売る/消費するビジネス</strong>の関係</td>
+<td>ビジネスサービスとの接続</td>
+</tr>
+<tr>
+<td><strong>Fly</strong></td>
+<td>情報ポートフォリオ等の高度な対象</td>
+<td>戦略・全社最適</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="callout warn">
+<p>⚠️ <strong>引っかけ</strong>：順序は <strong>Foundation → Crawl → Walk → Run → Fly</strong>。Foundation を飛ばして Crawl はできない
+（基礎データが他ドメインから参照されるため）。「最初にやるべきは？」→ <strong>Foundation</strong>。</p>
+<p>📌 <strong>要点</strong>：各ステージは<strong>段階的に価値を出す</strong>。Crawl=ITSM、Walk=インフラ/アプリ、Run=ビジネスとの関係、
+という"何を載せるか"の順番で覚える。</p>
+</blockquote>
+<h2>CSDM の有効化と移行</h2>
+<ol>
+<li><strong>CSDM プラグインを有効化</strong>。</li>
+<li><strong>ライフサイクル同期を有効化</strong>：一度きりの処理でレガシー状態値（asset/CI）を CSDM value pair へ変換。
+   以後は business rule が IBI / asset / CI のライフサイクル値を<strong>定期的に揃える</strong>。</li>
+<li><strong>既存データを移行・同期</strong>して、正しいCMDBテーブルへ載せ替える。</li>
+</ol>
+<h3>Lifecycle Mapping フォーム</h3>
+<p><code>life_cycle_mapping</code>（前節）の各マッピングルールは <strong>Lifecycle Mapping フォーム</strong>で確認・設定する。
+レガシー値 → CSDM value pair の対応を、テーブル単位・優先度付きで定義する。</p>
+<h2>第5章まとめ（CSDM）</h2>
+<ol>
+<li>CSDM＝CMDBの<strong>使い方の標準</strong>。データを正しいテーブル/ドメインへ（<a href="#ch5-s1">§1</a>）。</li>
+<li>状態は <strong>stage＋status の value pair</strong>。Asset/CI/IBI は <strong>product instance</strong> で整合（<a href="#ch5-s2">§2</a>）。</li>
+<li>導入は <strong>Foundation→Crawl→Walk→Run→Fly</strong> の段階式。有効化＝プラグイン＋ライフサイクル同期＋移行（本節）。</li>
+</ol>
+<p><strong>主要用語</strong>：foundation/crawl/walk/run/fly / CSDM プラグイン / ライフサイクル同期 / <code>life_cycle_mapping</code> /
+Information Object [<code>cmdb_ci_information_object</code>]。</p></div><div class="sources"><span class="src-h">出典(ServiceNow 公式Docs)</span><ul><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/common-service-data-model-csdm/csdm-implementation-stages.html" target="_blank" rel="noopener">Implementing the CSDM framework in stages</a></li><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/common-service-data-model-csdm/foundation-domain.html" target="_blank" rel="noopener">Foundation domain in the CSDM model</a></li><li><a href="https://www.servicenow.com/docs/r/servicenow-platform/common-service-data-model-csdm/csdm-life-cycle-standard-values.html" target="_blank" rel="noopener">Map legacy status values to CSDM life-cycle values</a></li></ul></div></section></div></main>
+</div>
+<div id="scrim"></div>
+<footer>
+  <b>非公式・個人の学習メモです。</b> ServiceNow, Inc. とは無関係で、公式の保証はありません。<br>
+  本文の出典は ServiceNow 公式製品ドキュメント(<a href="https://github.com/ServiceNow/ServiceNowDocs" target="_blank" rel="noopener" style="color:var(--accent)">ServiceNow/ServiceNowDocs</a>, Apache-2.0)。各節の出典リンク先を参照。<br>
+  ServiceNow, CMDB, CSDM, CIS-DF 等は ServiceNow, Inc. の商標です。
+</footer>
+<script>
+var nav=document.getElementById('nav'),scrim=document.getElementById('scrim'),btn=document.getElementById('menubtn');
+function closeNav(){nav.classList.remove('open');scrim.classList.remove('open');}
+btn.onclick=function(){nav.classList.toggle('open');scrim.classList.toggle('open');};
+scrim.onclick=closeNav;
+nav.addEventListener('click',function(e){if(e.target.tagName==='A')closeNav();});
+</script>
+</body>
+</html>

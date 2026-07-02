@@ -1,0 +1,67 @@
+{
+  "blueprint": "ServiceNow CIS-DF (Data Foundations / CMDB and CSDM)",
+  "note": "章＝公式ブループリントの加重ドメイン。節＝サブ目標。weight は配点(%)。",
+  "chapters": [
+    {
+      "id": "ch0",
+      "domain": "基礎（前提知識・任意）",
+      "sections": [
+        { "id": "ch0-s1", "title": "CMDB と CI とクラス階層（まず全体像）" },
+        { "id": "ch0-s2", "title": "データの流れ：どこから来て、どう入るか（→ IRE → CMDB）" },
+        { "id": "ch0-s3", "title": "サービスの基礎（service / offering / business service）" }
+      ]
+    },
+    {
+      "id": "ch1",
+      "domain": "Governance / CMDB Health",
+      "weight": 35,
+      "sections": [
+        { "id": "ch1-s1", "title": "CMDB Health の3C: Completeness / Compliance / Correctness" },
+        { "id": "ch1-s2", "title": "Health ダッシュボードと KPI / CSF メトリクス" },
+        { "id": "ch1-s3", "title": "重複CIの検出と是正(De-duplication wizard・一括是正)" },
+        { "id": "ch1-s4", "title": "Data Manager とポリシー / フィルター条件" },
+        { "id": "ch1-s5", "title": "Remediation playbook によるデータ品質改善" }
+      ]
+    },
+    {
+      "id": "ch2",
+      "domain": "Insight",
+      "weight": 20,
+      "sections": [
+        { "id": "ch2-s1", "title": "CMDB データからの可視化・価値抽出" },
+        { "id": "ch2-s2", "title": "サービス視点とリレーションの活用" },
+        { "id": "ch2-s3", "title": "レポート・CMDB Coverage・CIの再分類" }
+      ]
+    },
+    {
+      "id": "ch3",
+      "domain": "Ingestion",
+      "weight": 19,
+      "sections": [
+        { "id": "ch3-s1", "title": "IRE(識別 / 突合エンジン)とゲートキーパー" },
+        { "id": "ch3-s2", "title": "識別ルール・リコンシリエーションルール" },
+        { "id": "ch3-s3", "title": "Multisource CMDB と複数データソースの統合" }
+      ]
+    },
+    {
+      "id": "ch4",
+      "domain": "Configuration",
+      "weight": 15,
+      "sections": [
+        { "id": "ch4-s1", "title": "CI Class Manager(クラス階層・属性管理)" },
+        { "id": "ch4-s2", "title": "Relationship ライフサイクルと依存関係" },
+        { "id": "ch4-s3", "title": "Group Sync(Support / Change / Managed by グループ)" }
+      ]
+    },
+    {
+      "id": "ch5",
+      "domain": "CSDM Fundamentals",
+      "weight": 11,
+      "sections": [
+        { "id": "ch5-s1", "title": "CSDM フレームワーク概要(5.0 / 4.0 の差)" },
+        { "id": "ch5-s2", "title": "Lifecycle フィールド(Stage / Status)と CI 分類" },
+        { "id": "ch5-s3", "title": "Lifecycle Mapping とサービス層(Domains)" }
+      ]
+    }
+  ]
+}
