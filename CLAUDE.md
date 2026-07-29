@@ -51,6 +51,22 @@ open site/index.html
 下記「公開ポリシー」)。これらは一覧HTMLに正解が無く `raw/cisdf_drag1.html` 等で個別取得している。
 `--check` で未対応 seq を確認できる。
 
+## 画像(図表)の扱いと CSA版との同期
+
+`build_site.py` は `INLINE_IMAGES = True` のとき `site/images/` を読んで **data URI(base64)に埋め込む**ので、
+成果物は `index.html` 1枚で完結する(画像フォルダの持ち回り不要)。実測: 33枚5.70MB → base64 7.60MB、
+`index.html` は **0.62MB → 8.22MB**。base64 は英数字と `+ / =` だけなので JS 側の `esc()`(`&<>` のみ)を
+通しても壊れない。画像が見つからない場合は警告を出して元の相対パスのまま残す(ビルドは止めない)。
+※スマホでの初回表示が重いと感じたら、ビルド時に WebP 変換を挟むのが本命(Pillow はビルド時のみの依存に
+なるので、出力HTMLが依存なしである点は保てる)。
+
+**`build_site.py` / `build_textbook.py` は先頭の `EXAM` 辞書以外を CSA版(`C:\Users\kyout\dev\CSA - Claude`)と
+同一に保つ設計**。UI を改善したら「相手のファイルを丸ごとコピーして `EXAM` ブロックだけ元に戻す」で移植できる
+(2026-07-29 に画像埋め込みをこの方式で移植し、差分が `EXAM` のみであることを確認済み)。
+⚠️ `EXAM["ls"]="cisdf."` は**既存の学習進捗(done/要復習)が入っている localStorage キー**。変えると進捗が
+消えたように見えるので触らないこと。`INLINE_IMAGES`/`MIME`/`inline_images()` は試験非依存＝`EXAM` ブロック外
+なので、同期のときは一緒に運ぶ。
+
 ## 真実源(source of truth)とデータの流れ
 
 - **`data/questions.json`** — `parse.py` が生成する原文。再生成可能。1問のキー:

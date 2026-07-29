@@ -8,14 +8,72 @@ data/translated.json(無ければ data/questions.json)を読み、
 - 進捗(解いた・要復習)は localStorage に保存
 ビルド不要・依存なし。生成HTMLをそのまま開くだけ。
 """
+import base64
 import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+
+# ── 試験ごとに変わるのはここだけ ──────────────────────────────────
+# このブロック以外は CSA 版(CSA - Claude)の build_site.py と同一に保つこと。
+# UI を改善したら「相手のファイルを丸ごとコピーして、このブロックだけ元に戻す」で移植できる。
+# ls(localStorageプレフィックス)を試験ごとに変えるのは必須: 同一オリジンに2つ置くと進捗が混ざる。
+# ⚠️ "cisdf." は既存の学習進捗(done/要復習)が入っているキー。変えると進捗が消えたように見える。
+EXAM = {
+    "title": "CIS-DF 学習",
+    "ls": "cisdf.",
+}
+# ────────────────────────────────────────────────────────────────
+
 src = ROOT / "data" / "translated.json"
 if not src.exists():
     src = ROOT / "data" / "questions.json"
 data = json.loads(src.read_text(encoding="utf-8"))
+
+# 画像を data URI で埋め込むか(True = HTML1枚で完結・site/images/ の持ち回りが不要)。
+# ※試験非依存の共通機能。CIS-DF版と同期するときはこちらも一緒に移すこと(EXAM ブロック外)。
+INLINE_IMAGES = True
+
+MIME = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg",
+        ".gif": "image/gif", ".webp": "image/webp"}
+
+
+def inline_images(data):
+    """questions の *_images("images/xxx.png")を data URI に置換する。
+    base64 は英数字と + / = だけなので、JS側の esc(&<>のみ) でも壊れない。
+    見つからない画像は元のパスのまま残す(警告を出して続行)。"""
+    imgdir = ROOT / "site" / "images"
+    cache, missing = {}, []
+
+    def conv(rel):
+        if not isinstance(rel, str) or not rel.startswith("images/"):
+            return rel
+        if rel in cache:
+            return cache[rel]
+        f = imgdir / Path(rel).name
+        if not f.exists():
+            missing.append(rel)
+            cache[rel] = rel
+            return rel
+        b = base64.b64encode(f.read_bytes()).decode("ascii")
+        cache[rel] = f"data:{MIME.get(f.suffix.lower(), 'application/octet-stream')};base64,{b}"
+        return cache[rel]
+
+    n = 0
+    for q in data:
+        for key in ("question_images", "answer_images"):
+            if q.get(key):
+                q[key] = [conv(x) for x in q[key]]
+                n += len(q[key])
+    if missing:
+        print(f"[warn] 画像が見つからない({len(missing)}件): {', '.join(sorted(set(missing))[:5])} …")
+    embedded = sum(len(v) for k, v in cache.items() if v.startswith("data:"))
+    return n, len(cache) - len(set(missing)), embedded
+
+
+if INLINE_IMAGES:
+    refs, uniq, nbytes = inline_images(data)
+    print(f"[images] {uniq}枚を埋め込み(参照{refs}箇所) +{nbytes/1024/1024:.2f}MB")
 
 payload = json.dumps(data, ensure_ascii=False)
 
@@ -24,7 +82,7 @@ HTML = r"""<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-<title>CIS-DF 学習</title>
+<title>__TITLE__</title>
 <style>
 :root{--bg:#0f1115;--card:#1a1d24;--fg:#e8eaed;--mut:#9aa0a6;--line:#2a2e37;
   --hi:#34a853;--mid:#fbbc04;--lo:#ea4335;--accent:#8ab4f8;}
@@ -87,7 +145,7 @@ footer{position:fixed;bottom:0;left:0;right:0;background:var(--bg);border-top:1p
 </head>
 <body>
 <header>
-  <h1><span>CIS-DF 学習 <span class="count" id="count"></span></span><a class="tblink" href="textbook.html">📘 教科書</a></h1>
+  <h1><span>__TITLE__ <span class="count" id="count"></span></span><a class="tblink" href="textbook.html">📘 教科書</a></h1>
   <div class="controls">
     <select id="topic"><option value="">全トピック</option></select>
     <input type="search" id="q" placeholder="検索(英/日)">
@@ -106,13 +164,13 @@ footer{position:fixed;bottom:0;left:0;right:0;background:var(--bg);border-top:1p
 <script id="data" type="application/json">__PAYLOAD__</script>
 <script>
 const DATA = JSON.parse(document.getElementById('data').textContent);
-const savedF = JSON.parse(localStorage.getItem('cisdf.filters')||'{}');
-let state = {lang: localStorage.getItem('cisdf.lang')||'ja', memo: !!savedF.memo, onlymark:!!savedF.onlymark,
+const savedF = JSON.parse(localStorage.getItem('__LS__filters')||'{}');
+let state = {lang: localStorage.getItem('__LS__lang')||'ja', memo: !!savedF.memo, onlymark:!!savedF.onlymark,
   topic:savedF.topic||'', q:savedF.q||'', reveal:new Set(), onlytodo:!!savedF.onlytodo,
-  page:0, per: parseInt(localStorage.getItem('cisdf.per')||'20',10)};
-function saveFilters(){localStorage.setItem('cisdf.filters',JSON.stringify(
+  page:0, per: parseInt(localStorage.getItem('__LS__per')||'20',10)};
+function saveFilters(){localStorage.setItem('__LS__filters',JSON.stringify(
   {memo:state.memo,onlymark:state.onlymark,onlytodo:state.onlytodo,topic:state.topic,q:state.q}));}
-let prog = JSON.parse(localStorage.getItem('cisdf.prog')||'{}'); // {seq:{done,mark}}
+let prog = JSON.parse(localStorage.getItem('__LS__prog')||'{}'); // {seq:{done,mark}}
 
 const topics=[...new Set(DATA.map(d=>d.topic))].filter(Boolean).sort();
 const tsel=document.getElementById('topic');
@@ -261,19 +319,19 @@ function esc(s){return (s==null?'':String(s)).replace(/[&<>]/g,c=>({'&':'&amp;',
 function imgs(arr){return (arr&&arr.length)?('<div class="imgs">'+arr.map(s=>`<img loading="lazy" src="${esc(s)}">`).join('')+'</div>'):''}
 window.revealCard=function(seq){state.reveal.add(String(seq));render();};
 window.toggle=function(seq,key){prog[seq]=prog[seq]||{};prog[seq][key]=!prog[seq][key];
-  localStorage.setItem('cisdf.prog',JSON.stringify(prog));render();}
+  localStorage.setItem('__LS__prog',JSON.stringify(prog));render();}
 
 tsel.onchange=e=>{state.topic=e.target.value;state.page=0;saveFilters();render()};
 document.getElementById('q').oninput=e=>{state.q=e.target.value;state.page=0;saveFilters();render()};
-document.getElementById('per').onchange=e=>{state.per=parseInt(e.target.value,10);localStorage.setItem('cisdf.per',e.target.value);state.page=0;render()};
-document.getElementById('lang').onclick=()=>{const order=['ja','mt','en'];state.lang=order[(order.indexOf(state.lang)+1)%3];localStorage.setItem('cisdf.lang',state.lang);setLangBtn();render()};
+document.getElementById('per').onchange=e=>{state.per=parseInt(e.target.value,10);localStorage.setItem('__LS__per',e.target.value);state.page=0;render()};
+document.getElementById('lang').onclick=()=>{const order=['ja','mt','en'];state.lang=order[(order.indexOf(state.lang)+1)%3];localStorage.setItem('__LS__lang',state.lang);setLangBtn();render()};
 setLangBtn();
 document.getElementById('mode').onclick=e=>{state.memo=!state.memo;state.reveal.clear();e.target.textContent=state.memo?'学習モード':'暗記モード';saveFilters();render()};
 function mkToggle(id,key,color){const b=document.getElementById(id);
   b.onclick=()=>{state[key]=!state[key];b.style.outline=state[key]?('2px solid '+color):'';state.page=0;saveFilters();render();};}
 mkToggle('onlymark','onlymark','var(--mid)');
 mkToggle('onlytodo','onlytodo','var(--accent)');
-document.getElementById('reset').onclick=()=>{if(confirm('進捗を全消去しますか?')){prog={};localStorage.removeItem('cisdf.prog');render()}};
+document.getElementById('reset').onclick=()=>{if(confirm('進捗を全消去しますか?')){prog={};localStorage.removeItem('__LS__prog');render()}};
 // 保存済みフィルタをUIコントロールに反映
 tsel.value=state.topic;
 document.getElementById('q').value=state.q;
@@ -288,5 +346,8 @@ render();
 """
 
 out = ROOT / "site" / "index.html"
-out.write_text(HTML.replace("__PAYLOAD__", payload), encoding="utf-8")
+html = (HTML.replace("__TITLE__", EXAM["title"])
+            .replace("__LS__", EXAM["ls"])
+            .replace("__PAYLOAD__", payload))   # payload は最後(中身に __ が出ても壊さない)
+out.write_text(html, encoding="utf-8")
 print(f"[build] {len(data)} questions -> {out}")
