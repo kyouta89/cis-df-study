@@ -122,7 +122,9 @@ API を使わず、Claude Code 内の並列サブエージェントで生成す�
 `index.html` のヘッダから「📘 教科書」リンクで繋ぐ。当初は index.html 内のタブに合成する案だったが、
 **教科書だけを公開できる(=出版安全)よう独立HTMLに分けた**——問題集HTMLはExamTopics由来なので公開不可。
 戻して合成しないこと。章＝公式ブループリントの加重ドメイン
-(Governance 35% / Insight 20% / Ingestion 19% / Configuration 15% / CSDM 11%)。`data/questions.json`
+(Governance 35% / Insight 20% / Ingestion 19% / Configuration 15% / CSDM 11%)。実際の `chapters.json` は
+**6章**——上記5章の前に `ch0`「基礎(前提知識・任意)」(`weight` なし=ブループリント外の自作導入章)がある。
+節は 3+5+3+3+3+3=**20節**。`data/questions.json`
 の `topic`(ExamTopics の便宜的5分割)とは**無関係**——各問はドメインへ内容で分類し直す(`qmap` 予定)。
 
 **出典源は GitHub の公式Markdown(重要)**: ServiceNow は製品docを **LLM最適化Markdown**として
@@ -136,7 +138,10 @@ API を使わず、Claude Code 内の並列サブエージェントで生成す�
 CIS-DF 関連の分類フォルダ(`markdown/servicenow-platform/` 配下、計496 md): `configuration-management-database-cmdb`(407)
 / `common-service-data-model-csdm`(59) / `cmdb-ci-class-models`(21) / `cmdb-integration-commons`(9)。
 
-- `data/textbook/chapters.json` — 目次(章・節の骨格＝構造の真実源)。
+- `data/textbook/chapters.json` — 目次(章・節の骨格＝構造の真実源)。形: `{blueprint, note,
+  chapters[{id, domain, weight?, sections[{id, title}]}]}`。**節の `id` が本文ファイル名**
+  (`content/<id>.md`)。ここに節を足しても md が無ければ `build_textbook.py` は**黙って本文なしで出力**する
+  (エラーにならない)ので、追加は chapters.json と md を必ず対で。
 - `data/textbook/catalog/file_index.json` — 上記4フォルダの md ファイル名一覧(選別の土台。DL済=トークン消費なし)。
 - `data/textbook/sources.json` — 出典取得キュー。`pages[]` に `{id, section, folder, file}`(raw URLは導出)。
 - `data/textbook/raw/<id>.md` — DL した公式Markdown原文。**1ファイルDLごとに即保存**。
@@ -146,7 +151,12 @@ CIS-DF 関連の分類フォルダ(`markdown/servicenow-platform/` 配下、計4
   現状 `sources.json` のキュー74件に対し `raw/` は92件(キュー外に手で足した分がある)。**差分は不整合ではない**
   ——status はキューを基準に見るので、余分な md は無視される。
 - `data/textbook/content/<section>.md` — 生成した教科書本文(中間スタイル=解説＋要点)。フロントマターに
-  `sources`(出典=canonical_url)・`related_seqs`(qmap で埋める・現状空)。
+  `chapter`/`section`/`title`/`sources`(出典=canonical_url)・`related_seqs`(qmap で埋める・現状空)。
+  ⚠️ **これは YAML ではなく `build_textbook.py` の `parse_front()` による自前パース**。認識するのは
+  「列0の `key: value`」と「`- title:` / `url:` の2行組(=`sources` 専用)」だけ。値のクォート・複数行・
+  ネストした配列は解釈されない(黙って落ちる)ので、既存 md の書き方をそのまま真似ること。
+  本文の記法: 引用ブロック(`>`)は **絵文字で色分け**される(`⚠`→warn / `📌`→note)。有効な Markdown 拡張は
+  `tables` / `fenced_code` / `sane_lists` / `md_in_html`(図は `<figure class="diagram">` を直書きしている)。
 - `src/build_textbook.py` — 教科書ジェネレータ。chapters.json＋content/*.md → **`site/textbook.html`**(問題集とは別の
   **出版安全な独立HTML**。ExamTopics由来の問題は含めない・末尾に免責/帰属)。**ビルド時のみ Python-Markdown 依存**
   (`pip install markdown`、出力HTMLは依存なし)。デザインは index.html と同じCSS変数で統一。
@@ -170,6 +180,10 @@ CIS-DF 関連の分類フォルダ(`markdown/servicenow-platform/` 配下、計4
   辞書でハードコードしており、**14問分の正解が公開リポジトリに載っていた**(2026-07-29 発見・是正済み。
   中身は `data/drag_answers.json` へ移動)。**過去のコミット履歴には残っている**(履歴の書き換えは未実施)。
   push前の `git diff --cached --name-only` チェックはファイル名しか見ないので、この型の事故は防げない。
+- **`.py` 以外で公開されるのは教科書だけ**: 追跡されているデータは `data/textbook/chapters.json` /
+  `content/*.md`(20本) / `sources.json` / `catalog/file_index.json` と生成物 `site/textbook.html` のみ
+  (`git ls-files` で確認できる)。裏を返すと **`content/*.md` に問題文・選択肢・正解を引用したら即公開事故**
+  ——`add_drag.py` と同じ型の穴。教科書本文は公式doc由来の説明だけで書くこと。
 - 結果として**このリポジトリの clone 単体では `site/index.html` は再生成できない**(入力HTMLが無い)。
   これは仕様。教科書側(`build_textbook.py`)だけは clone から再ビルドできる。
 - 詳細と免責は `README.md` を参照。
