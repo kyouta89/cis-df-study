@@ -244,7 +244,8 @@ function card(d){
   d.options.forEach((o,i)=>{
     const isC = showAns && sa.includes(o.label);
     const t = optText(d,o,i,lang);
-    opts+=`<li class="${isC?'correct':''} ${o.community_most_voted?'voted':''}"><span class="l">${o.label}.</span><span>${esc(t)}</span></li>`;
+    // ★(コミュ最多投票)も解答扱い: showAns でガードしないと暗記モードで答えが漏れる
+    opts+=`<li class="${isC?'correct':''} ${(showAns&&o.community_most_voted)?'voted':''}"><span class="l">${o.label}.</span><span>${esc(t)}</span></li>`;
   });
 
   // 公式doc査読バッジ(小)
