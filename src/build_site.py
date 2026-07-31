@@ -117,6 +117,7 @@ li.voted .l::after{content:" ★";color:var(--mid)}
 .rb-ok{background:rgba(52,168,83,.15);color:var(--hi)}
 .rb-med{background:rgba(251,188,4,.15);color:var(--mid)}
 .rb-ver{background:rgba(251,188,4,.15);color:var(--mid)}
+.rb-bad{background:rgba(234,67,53,.15);color:var(--lo)}
 .rb-sub{font-weight:normal;opacity:.85;margin-left:3px}
 details.srcfold{margin:6px 0 0}
 details.srcfold>summary{cursor:pointer;color:var(--mut);font-size:12px;list-style:none}
@@ -252,7 +253,10 @@ function card(d){
   let revbadge='';
   if(showAns && d.review_doc){
     const r=d.review_doc;
-    if(r.verdict==='version') revbadge=`<span class="rbadge rb-ver">🕒版依存</span>`;
+    // dispute = 公式docと提示正解が食い違う。✅を出すと誤答を保証してしまうので必ず最初に分岐する。
+    if(r.verdict==='dispute') revbadge=`<span class="rbadge rb-bad">⚠️公式docと不一致`+
+      (r.doc_answer?`<span class="rb-sub">doc: ${esc(r.doc_answer)}</span>`:'')+`</span>`;
+    else if(r.verdict==='version') revbadge=`<span class="rbadge rb-ver">🕒版依存</span>`;
     else if(r.confidence!=='high') revbadge=`<span class="rbadge rb-med">✅公式doc<span class="rb-sub">確度中</span></span>`;
     else revbadge=`<span class="rbadge rb-ok">✅公式doc</span>`;
   }
@@ -281,7 +285,7 @@ function card(d){
     const r=d.review_doc;
     const ev=(r.evidence||[]).filter(e=>e.url);
     const links=ev.map(e=>`<a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(e.source||'公式doc')}</a>`).join('　');
-    const showNote=(r.verdict==='version'||r.confidence!=='high')&&r.note;
+    const showNote=(r.verdict==='dispute'||r.verdict==='version'||r.confidence!=='high')&&r.note;
     if(links||showNote){
       revsrc=`<details class="srcfold"><summary>出典・補足${ev.length?`（公式doc ${ev.length}件）`:''}</summary>`+
         (showNote?`<div class="srcnote">${esc(r.note)}</div>`:'')+

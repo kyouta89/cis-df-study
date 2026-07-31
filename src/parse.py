@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-ExamTopics CIS-DF パーサー
+ExamTopics パーサー(試験非依存)
 保存したページHTML(1問〜50問/ページ)から問題・選択肢・正解・投票分布・
 Discussion(インライン分)を抽出し、data/questions.json を生成する。
 
