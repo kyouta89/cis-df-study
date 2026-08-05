@@ -30,6 +30,34 @@ if not src.exists():
     src = ROOT / "data" / "questions.json"
 data = json.loads(src.read_text(encoding="utf-8"))
 
+# 公式doc査読で問題ありと判定したものを成果物から完全に除外する。
+# トグルで出し分けたりはしない——HTMLに一切埋め込まない。
+#   defective  = 設問そのものが壊れている/古い(選択肢の破損・正解が選択肢に無い・旧UI前提)
+#   unverified = 一次情報で裏が取れなかった(設問自体の欠陥ではないが、確信を持って学べない)
+# 判定はデータ側(data/review_results.json の quality / quality_reason)にあり、ここは読むだけ。
+# ※試験非依存の共通機能。CSA版と同期するときはこのブロックも一緒に運ぶこと(EXAM ブロック外)。
+HIDE_QUALITY = {"defective", "unverified"}
+
+
+def drop_flagged(rows):
+    keep, dropped = [], []
+    for q in rows:
+        r = q.get("review_doc") or {}
+        # dispute は公式docの正解を示せる最重要の問題なので、何があっても隠さない。
+        if r.get("verdict") != "dispute" and r.get("quality") in HIDE_QUALITY:
+            dropped.append(q)
+        else:
+            keep.append(q)
+    if dropped:
+        from collections import Counter
+        why = Counter((q.get("review_doc") or {}).get("quality") for q in dropped)
+        print(f"[filter] 非表示 {len(dropped)}問 / 残り {len(keep)}問")
+        print(f"         内訳: {dict(why)}")
+    return keep
+
+
+data = drop_flagged(data)
+
 # 画像を data URI で埋め込むか(True = HTML1枚で完結・site/images/ の持ち回りが不要)。
 # ※試験非依存の共通機能。CIS-DF版と同期するときはこちらも一緒に移すこと(EXAM ブロック外)。
 INLINE_IMAGES = True
